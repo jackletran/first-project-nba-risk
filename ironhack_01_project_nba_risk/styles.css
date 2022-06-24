@@ -30,8 +30,9 @@ body {
 }
 
 h1 {
-  color: white;
+  color: var(--warriors-gold);
   font-size: 4rem;
+  text-shadow: var(--warriors-blue) 4px 3px 2px;
 }
 
 h1 img {
@@ -74,6 +75,7 @@ svg {
   font-size: 2rem;
   font-family: fantasy;
   color: white;
+  text-shadow: #020819 4px 3px 2px;
 }
 
 .die.attack {
@@ -92,6 +94,7 @@ svg {
   font-size: 3rem;
   font-family: fantasy;
   outline: 1px solid black;
+  text-shadow: #020819 4px 3px 2px;
 }
 
 .btn.boost {
@@ -133,4 +136,5 @@ svg {
   text-transform: uppercase;
   justify-content: center;
   font-size: 3rem;
+  text-shadow: #020819 4px 3px 2px;
 }
