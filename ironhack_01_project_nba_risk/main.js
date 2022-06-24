@@ -39,7 +39,57 @@ class Game {
       }
     });
   }
-  }
+
+  attachOffenseEventListener() {
+  const offenseButtonCollection = document.getElementsByClassName("offense");
+  const offenseButtonArray = [...offenseButtonCollection];
+  const offenseButtonSelect = offenseButtonArray[0];
+  offenseButtonSelect.addEventListener("click", () => rollDice());
+}
+
+  attachBoostEventListener() {
+  const boostButtonCollection = document.getElementsByClassName("boost");
+  const boostButtonArray = [...boostButtonCollection];
+  const boostButtonSelect = boostButtonArray[0];
+
+  // display "Boost stamina"
+  boostButtonSelect.addEventListener("click", () => {
+    finalResult = "The Warriors boost their stamina.";
+    innerResultCollection = document.getElementsByClassName("inner-result");
+    innerResultArray = [...innerResultCollection];
+    innerResultArray.forEach((element) => (element.innerHTML = finalResult));
+
+    // reset the dice
+    const dieCollection = document.getElementsByClassName("die");
+    const dieArray = [...dieCollection];
+    dieArray.forEach((element) => (element.innerHTML = "?"));
+  });
+}
+
+  attachEndturnEventListener() {
+  const endturnButtonCollection = document.getElementsByClassName("endturn");
+  const endturnButtonArray = [...endturnButtonCollection];
+  const endturnButtonSelect = endturnButtonArray[0];
+
+  endturnButtonSelect.addEventListener("click", () => {
+    // display "End turn"
+    finalResult = "The Warriors ended their turn.";
+    innerResultCollection = document.getElementsByClassName("inner-result");
+    innerResultArray = [...innerResultCollection];
+    innerResultArray.forEach((element) => (element.innerHTML = finalResult));
+    // reset the dice
+    const dieCollection = document.getElementsByClassName("die");
+    const dieArray = [...dieCollection];
+    dieArray.forEach((element) => (element.innerHTML = "?"));
+  });
+}
+
+  attachAllEventListeners() {
+  attachOffenseEventListener();
+  attachBoostEventListener();
+  attachEndturnEventListener();
+}
+  
 
   randomStateDistribution() {
     // randomly distribute all available states, assign how many troops to player1/2/3.dominatedStates.LOOP-THROUGH-EACH-STATE.unitsInThatState
@@ -55,6 +105,7 @@ class Game {
       }
     });
   }
+}
 
 class Player {
   constructor() {
