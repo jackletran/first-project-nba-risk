@@ -30,8 +30,9 @@ body {
 }
 
 text {
-  font: italic 15px sans-serif;
+  font: italic 1rem sans-serif;
   fill: black;
+  stroke-width: 0.1;
 }
 
 .small {
@@ -52,6 +53,7 @@ svg {
   background-image: var(--nba-background-image);
   background-position: center;
   background-size: 300px;
+  margin-bottom: 100px;
 }
 
 .country {

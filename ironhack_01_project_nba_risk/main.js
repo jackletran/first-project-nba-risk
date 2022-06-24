@@ -110,8 +110,8 @@ class Game {
 
 class Player {
   constructor() {
-    this.team = null;
-    this.boostUnits = 0;
+    this.team = null,
+    this.boostUnits = 0,
     this.stateInfo = {
       statesArray: ["PUSH ALL THE STATES WITH AT LEAST 1 UNIT IN THIS ARRAY AND COUNT"],
       statesCount: statesArray.length,
