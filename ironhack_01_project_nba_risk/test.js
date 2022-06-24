@@ -200,7 +200,7 @@ stephCurry.stateInfo.statesCount = stephCurry.stateInfo.statesArray.length;
 console.log(stephCurry.stateInfo.statesCount);
 console.log(stephCurry.stateInfo.statesArray);
 
-changeText();
+// changeText();
 
 let selectedState;
 

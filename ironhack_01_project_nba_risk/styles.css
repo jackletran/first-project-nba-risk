@@ -62,7 +62,6 @@ svg {
 }
 
 .country:hover {
-  fill: yellow;
   stroke-width: 3.97;
   cursor: pointer;
 }
@@ -148,4 +147,49 @@ svg {
   justify-content: center;
   font-size: 3rem;
   text-shadow: #020819 4px 3px 2px;
+}
+
+.pacific,
+.continent-1 {
+  fill: cornflowerblue;
+}
+
+.mountain,
+.continent-2 {
+  fill: aqua;
+}
+
+.wnorthcentral,
+.continent-3 {
+  fill: yellowgreen;
+}
+
+.wsouthcentral,
+.continent-4 {
+  fill: yellow;
+}
+
+.enorthcentral,
+.continent-5 {
+  fill: crimson;
+}
+
+.esouthcentral,
+.continent-6 {
+  fill: coral;
+}
+
+.satlantic,
+.continent-7 {
+  fill: darkmagenta;
+}
+
+.matlantic,
+.continent-8 {
+  fill: red;
+}
+
+.natlantic,
+.continent-9 {
+  fill: pink;
 }
