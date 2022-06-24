@@ -29,6 +29,15 @@ body {
   font-family: fantasy;
 }
 
+text {
+  font: italic 15px sans-serif;
+  fill: black;
+}
+
+.small {
+  font: italic 13px sans-serif;
+}
+
 h1 {
   color: var(--warriors-gold);
   font-size: 4rem;

@@ -15,6 +15,7 @@ class Game {
     console.log("Player 3 select your team")
     this.player3.selectTeam(this.player3);
     this.randomStateDistribution();  
+    this.attachAllEventListeners;
   }
 
   selectTeam(playerX) {
@@ -95,7 +96,7 @@ class Game {
     // randomly distribute all available states, assign how many troops to player1/2/3.dominatedStates.LOOP-THROUGH-EACH-STATE.unitsInThatState
   }
 
-  attachEventListeners() {
+  attachEventListeners() { // reference
     document.addEventListener("click", (event) => {
       // save first country in array, then save second country and let them fight/compare
       if (event.key === "ArrowLeft") {

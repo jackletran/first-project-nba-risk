@@ -134,4 +134,10 @@ function attachAllEventListeners() {
   attachEndturnEventListener();
 }
 
-attachAllEventListeners();
+function changeText() {
+  finalResult = "Howdy Cowboay";
+  document.getElementById("thisisthetextyoufindinTexas").innerHTML =
+    "Howdy Cowboay";
+}
+
+changeText();
