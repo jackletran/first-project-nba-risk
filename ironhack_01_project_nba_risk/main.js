@@ -85,10 +85,24 @@ class Game {
   });
 }
 
+  attachSelectedStateEventListener() {
+  const getInnerResultBox = document.getElementById("inner-result");
+  const gameboard = document.getElementById("svg");
+  let selectedState;
+
+  gameboard.addEventListener("click", () => {
+    // display "End turn"
+    console.log("You clicked on this selectedState: " + event.target.id);
+    selectedState = event.target.id;
+    getInnerResultBox.innerHTML = selectedState;
+  });
+}
+
   attachAllEventListeners() {
   attachOffenseEventListener();
   attachBoostEventListener();
   attachEndturnEventListener();
+  attachSelectedStateEventListener();
 }
   
 
