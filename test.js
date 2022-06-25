@@ -271,6 +271,9 @@ function attachAllEventListeners() {
   attachSelectedStateEventListener();
 }
 
+// Info Console log
+/////////////////////////////////
+
 console.log(stephCurry.team);
 console.log(stephCurry.boostUnits);
 console.log(stephCurry.stateInfo);
@@ -285,11 +288,21 @@ console.log(stephCurry.stateInfo.unitsInThatState.TX);
 console.log(Object.keys(kyrieIrving.stateInfo.unitsInThatState));
 console.log(Object.values(kyrieIrving.stateInfo.unitsInThatState));
 
-function changeText() {
+// Info Console log
+/////////////////////////////////
+
+function displayUnits() {
   const kyrieStateArray = Object.keys(kyrieIrving.stateInfo.unitsInThatState);
   const kyrieUnitsArray = Object.values(kyrieIrving.stateInfo.unitsInThatState);
   const stephStateArray = Object.keys(stephCurry.stateInfo.unitsInThatState);
   const stephUnitsArray = Object.values(stephCurry.stateInfo.unitsInThatState);
+  // SVG Data
+  const targetSvg = document.getElementById("svg");
+  let newImage = document.createElement("image");
+  newImage.setAttribute("x", "385");
+  newImage.setAttribute("y", "285");
+  newImage.setAttribute("href", "./Images/Icons/gsw-logo.png");
+  targetSvg.appendChild(newImage);
 
   // Kyrie
   for (let i = 0; i < kyrieStateArray.length; i++) {
@@ -297,21 +310,21 @@ function changeText() {
     let stateArea = document.getElementById(kyrieStateArray[i]);
 
     if (kyrieUnitsArray[i] > 0) {
-      stateText.innerHTML = `Units: ${kyrieUnitsArray[i]}`;
-      stateText.style.fill = "var(--nets-black)";
-      stateArea.style.fill = "var(--nets-white)";
+      stateText.innerHTML = `${kyrieUnitsArray[i]}`;
+      // stateText.style.fill = "var(--nets-black)";
+      // stateArea.style.fill = "var(--nets-white)";
+      // Add image icon
     }
   }
-  // Curry läuft, wenn Kyrie aus ist
 
   for (let c = 0; c < stephStateArray.length; c++) {
     let stateText = document.getElementById(`${stephStateArray[c]}-text`);
     let stateArea = document.getElementById(stephStateArray[c]);
 
     if (stephUnitsArray[c] > 0) {
-      stateText.innerHTML = `Units: ${stephUnitsArray[c]}`;
-      stateText.style.fill = "var(--warriors-gold)";
-      stateArea.style.fill = "var(--warriors-blue)";
+      stateText.innerHTML = `${stephUnitsArray[c]}`;
+      // stateText.style.fill = "var(--warriors-gold)";
+      // stateArea.style.fill = "var(--warriors-blue)";
     }
   }
 }
@@ -319,4 +332,4 @@ function changeText() {
 stephCurry.stateInfo.unitsInThatState.TX += 5;
 
 attachAllEventListeners();
-changeText();
+displayUnits();

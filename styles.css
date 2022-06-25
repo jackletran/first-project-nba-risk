@@ -35,6 +35,10 @@ text {
   stroke-width: 0.1;
 }
 
+image {
+  width: 20px;
+}
+
 .small {
   font: italic 13px sans-serif;
 }
