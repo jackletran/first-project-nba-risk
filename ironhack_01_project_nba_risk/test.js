@@ -23,16 +23,122 @@ const kyrieIrving = {
     statesArray: [],
     statesCount: 0,
     unitsInThatState: {
-      SC: 1,
-      SD: 2,
-      TN: 3,
-      TX: 0,
-      UT: 0,
-      VT: 0,
-      VI: 0,
+      AK: 3,
+      AL: 3,
+      AZ: 3,
+      AR: 3,
+      CA: 3,
+      CZ: 3,
+      CO: 3,
+      CT: 3,
+      DE: 3,
+      DC: 3,
+      FL: 3,
+      GA: 3,
+      GU: 3,
+      HI: 3,
+      ID: 3,
+      IL: 3,
+      IN: 3,
+      IA: 3,
+      KS: 3,
+      KY: 3,
+      LA: 3,
+      ME: 3,
+      MD: 3,
+      MA: 3,
+      MI: 3,
+      MN: 3,
+      MS: 3,
+      MO: 3,
+      MT: 3,
+      NE: 3,
+      NV: 5,
+      NH: 5,
+      NJ: 5,
+      NM: 5,
+      NY: 5,
+      NC: 5,
+      ND: 5,
+      OH: 5,
+      OK: 5,
+      OR: 5,
+      PA: 5,
+      PR: 5,
+      RI: 5,
+      SC: 5,
+      SD: 5,
+      TN: 5,
+      TX: 5,
+      UT: 5,
+      VT: 5,
+      VI: 5,
+      VA: 5,
+      WA: 5,
+      WV: 5,
+      WI: 5,
+      WY: 5,
     },
   },
 };
+
+const statesLoopArray = [
+  "AL",
+  "AK",
+  "AZ",
+  "AR",
+  "CA",
+  "CZ",
+  "CO",
+  "CT",
+  "DE",
+  "DC",
+  "FL",
+  "GA",
+  "GU",
+  "HI",
+  "ID",
+  "IL",
+  "IN",
+  "IA",
+  "KS",
+  "KY",
+  "LA",
+  "ME",
+  "MD",
+  "MA",
+  "MI",
+  "MN",
+  "MS",
+  "MO",
+  "MT",
+  "NE",
+  "NV",
+  "NH",
+  "NJ",
+  "NM",
+  "NY",
+  "NC",
+  "ND",
+  "OH",
+  "OK",
+  "OR",
+  "PA",
+  "PR",
+  "RI",
+  "SC",
+  "SD",
+  "TN",
+  "TX",
+  "UT",
+  "VT",
+  "VI",
+  "VA",
+  "WA",
+  "WV",
+  "WI",
+  "WY",
+];
 
 function rollDice() {
   rollAttackerDice();
@@ -200,58 +306,41 @@ console.log(stephCurry.stateInfo.unitsInThatState.SD);
 console.log(stephCurry.stateInfo.unitsInThatState.TN);
 console.log(stephCurry.stateInfo.unitsInThatState.TX);
 
-stephCurry.stateInfo.unitsInThatState.TX += 5;
-
-console.log(stephCurry.stateInfo.unitsInThatState.TX);
-
-if (stephCurry.stateInfo.unitsInThatState.TX > 0) {
-  // stephCurry.stateInfo.statesArray.push(
-  //   Object.keys(stephCurry.stateInfo.unitsInThatState.TX)
-  // );
-  stephCurry.stateInfo.statesArray.push(123);
-}
-
-console.log(stephCurry.stateInfo.statesArray);
-
-const allKeys = Object.keys(stephCurry.stateInfo.unitsInThatState); // Here's the method!!
-const whereIsTX = allKeys.indexOf("TX");
-
-console.log("allKeys:", allKeys);
-console.log("TX is here: ", whereIsTX);
-console.log(allKeys[3]);
-
-stephCurry.stateInfo.statesCount = stephCurry.stateInfo.statesArray.length;
-
-console.log(stephCurry.stateInfo.statesCount);
-console.log(stephCurry.stateInfo.statesArray);
-
-attachAllEventListeners();
+console.log(Object.keys(kyrieIrving.stateInfo.unitsInThatState));
+console.log(Object.values(kyrieIrving.stateInfo.unitsInThatState));
 
 function changeText() {
-  let scText = document.getElementById("SC-text");
-  let sdText = document.getElementById("SD-text");
-  let tnText = document.getElementById("TN-text");
-  let txText = document.getElementById("TX-text");
-  let uiText = document.getElementById("UT-text");
-  let vtText = document.getElementById("VT-text");
-  let viText = document.getElementById("VI-text");
+  const kyrieStateArray = Object.keys(kyrieIrving.stateInfo.unitsInThatState);
+  const kyrieUnitsArray = Object.values(kyrieIrving.stateInfo.unitsInThatState);
+  const stephStateArray = Object.keys(stephCurry.stateInfo.unitsInThatState);
+  const stephUnitsArray = Object.values(stephCurry.stateInfo.unitsInThatState);
 
-  switch (true) {
-    case kyrieIrving.stateInfo.unitsInThatState.SD > 0:
-      sdText.innerHTML = `Stamina: ${kyrieIrving.stateInfo.unitsInThatState.SD}`;
-      sdText.style.fill = "var(--nets-white)";
-      let sdState = document.getElementById("SD");
-      sdState.style.fill = "var(--nets-black)";
-    case stephCurry.stateInfo.unitsInThatState.TX > 0:
-      txText.innerHTML = `Stamina: ${stephCurry.stateInfo.unitsInThatState.TX}`;
-      txText.style.fill = "var(--warriors-gold)";
-      let txState = document.getElementById("TX");
-      txState.style.fill = "var(--warriors-blue)";
-      break; // NO BREAK!!!
+  // Kyrie
+  for (let i = 0; i < kyrieStateArray.length; i++) {
+    let stateText = document.getElementById(`${kyrieStateArray[i]}-text`);
+    let stateArea = document.getElementById(kyrieStateArray[i]);
 
-    default:
-      console.log("Something is wrong shilly");
+    if (kyrieUnitsArray[i] > 0) {
+      stateText.innerHTML = `Units: ${kyrieUnitsArray[i]}`;
+      stateText.style.fill = "var(--nets-white)";
+      stateArea.style.fill = "var(--nets-black)";
+    }
+  }
+  // Curry läuft, wenn Kyrie aus ist
+
+  for (let c = 0; c < stephStateArray.length; c++) {
+    let stateText = document.getElementById(`${stephStateArray[c]}-text`);
+    let stateArea = document.getElementById(stephStateArray[c]);
+
+    if (stephUnitsArray[c] > 0) {
+      stateText.innerHTML = `Units: ${stephUnitsArray[c]}`;
+      stateText.style.fill = "var(--warriors-gold)";
+      stateArea.style.fill = "var(--warriors-blue)";
+    }
   }
 }
 
+stephCurry.stateInfo.unitsInThatState.TX += 5;
+
+attachAllEventListeners();
 changeText();
