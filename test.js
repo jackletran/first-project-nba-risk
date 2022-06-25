@@ -8,10 +8,10 @@ const stephCurry = {
       SC: 0,
       SD: 0,
       TN: 0,
-      TX: 1,
-      UT: 2,
-      VT: 3,
-      VI: 4,
+      TX: 330,
+      UT: 331,
+      VT: 332,
+      VI: 333,
     },
   },
 };
@@ -24,36 +24,36 @@ const kyrieIrving = {
     statesCount: 0,
     unitsInThatState: {
       TX: 0,
-      WA: 2,
-      OR: 2,
-      ID: 2,
-      MT: 2,
-      WY: 2,
-      CA: 2,
-      HI: 2,
-      AK: 2,
-      NV: 2,
-      CA: 2,
-      CO: 2,
-      NM: 2,
-      AZ: 2,
-      ND: 2,
-      SD: 2,
-      NE: 2,
-      KS: 2,
-      OK: 2,
-      MN: 2,
+      WA: 11,
+      OR: 12,
+      ID: 13,
+      MT: 14,
+      WY: 15,
+      CA: 16,
+      HI: 17,
+      AK: 18,
+      NV: 19,
+      CA: 20,
+      CO: 21,
+      NM: 22,
+      AZ: 23,
+      ND: 24,
+      SD: 25,
+      NE: 26,
+      KS: 27,
+      OK: 28,
+      MN: 29,
       IA: 2,
-      MO: 2,
-      AR: 2,
-      LA: 2,
-      WI: 2,
-      IL: 2,
-      MI: 2,
-      IN: 2,
-      OH: 2,
-      AL: 2,
-      UT: 0,
+      MO: 3,
+      AR: 4,
+      LA: 5,
+      WI: 6,
+      IL: 7,
+      MI: 8,
+      IN: 9,
+      OH: 10,
+      AL: 98,
+      UT: 99,
     },
   },
 };
@@ -271,6 +271,45 @@ function attachAllEventListeners() {
   attachSelectedStateEventListener();
 }
 
+function displayUnits() {
+  const kyrieStateArray = Object.keys(kyrieIrving.stateInfo.unitsInThatState);
+  const kyrieUnitsArray = Object.values(kyrieIrving.stateInfo.unitsInThatState);
+  const stephStateArray = Object.keys(stephCurry.stateInfo.unitsInThatState);
+  const stephUnitsArray = Object.values(stephCurry.stateInfo.unitsInThatState);
+  // SVG Data
+  // Add image icon
+  const targetSvg = document.getElementById("svg");
+  let newImage = document.createElement("image");
+  newImage.setAttribute("x", "385");
+  newImage.setAttribute("y", "285");
+  newImage.setAttribute("href", "./Images/Icons/gsw-logo.png");
+  targetSvg.appendChild(newImage);
+
+  // Kyrie
+  for (let i = 0; i < kyrieStateArray.length; i++) {
+    let stateText = document.getElementById(`${kyrieStateArray[i]}-text`);
+    let stateArea = document.getElementById(kyrieStateArray[i]);
+
+    if (kyrieUnitsArray[i] > 0) {
+      stateText.innerHTML = `${kyrieUnitsArray[i]}`;
+      stateText.style.fill = "var(--nets-black)";
+      stateArea.style.fill = "var(--nets-white)";
+      // Add image icon
+    }
+  }
+
+  for (let c = 0; c < stephStateArray.length; c++) {
+    let stateText = document.getElementById(`${stephStateArray[c]}-text`);
+    let stateArea = document.getElementById(stephStateArray[c]);
+
+    if (stephUnitsArray[c] > 0) {
+      stateText.innerHTML = `${stephUnitsArray[c]}`;
+      stateText.style.fill = "var(--warriors-gold)";
+      stateArea.style.fill = "var(--warriors-blue)";
+    }
+  }
+}
+
 // Info Console log
 /////////////////////////////////
 
@@ -291,45 +330,44 @@ console.log(Object.values(kyrieIrving.stateInfo.unitsInThatState));
 // Info Console log
 /////////////////////////////////
 
-function displayUnits() {
-  const kyrieStateArray = Object.keys(kyrieIrving.stateInfo.unitsInThatState);
-  const kyrieUnitsArray = Object.values(kyrieIrving.stateInfo.unitsInThatState);
-  const stephStateArray = Object.keys(stephCurry.stateInfo.unitsInThatState);
-  const stephUnitsArray = Object.values(stephCurry.stateInfo.unitsInThatState);
-  // SVG Data
-  const targetSvg = document.getElementById("svg");
-  let newImage = document.createElement("image");
-  newImage.setAttribute("x", "385");
-  newImage.setAttribute("y", "285");
-  newImage.setAttribute("href", "./Images/Icons/gsw-logo.png");
-  targetSvg.appendChild(newImage);
+function boostUnits() {
+  const getInnerResultBox = document.getElementById("inner-result");
+  const gameboard = document.getElementById("svg");
+  const boostButtonCollection = document.getElementsByClassName("boost");
+  const boostButtonArray = [...boostButtonCollection];
+  const boostButtonSelect = boostButtonArray[0];
+  let selectedState;
+  let boostLeftover = stephCurry.boostUnits;
+  let CURRYCOUNTRY = stephCurry.stateInfo.unitsInThatState.TX;
+  let howManyUnitsYouHavePlaced = 0;
 
-  // Kyrie
-  for (let i = 0; i < kyrieStateArray.length; i++) {
-    let stateText = document.getElementById(`${kyrieStateArray[i]}-text`);
-    let stateArea = document.getElementById(kyrieStateArray[i]);
+  boostButtonSelect.addEventListener("click", () => {
+    // display "selected State"
+    boostLeftover += 3;
+    selectedState = event.target.id;
+    getInnerResultBox.innerHTML = `You have ${boostLeftover} Units left.`;
 
-    if (kyrieUnitsArray[i] > 0) {
-      stateText.innerHTML = `${kyrieUnitsArray[i]}`;
-      // stateText.style.fill = "var(--nets-black)";
-      // stateArea.style.fill = "var(--nets-white)";
-      // Add image icon
-    }
-  }
+    // reset the dice
+    const dieCollection = document.getElementsByClassName("die");
+    const dieArray = [...dieCollection];
+    dieArray.forEach((element) => (element.innerHTML = "?"));
+  });
 
-  for (let c = 0; c < stephStateArray.length; c++) {
-    let stateText = document.getElementById(`${stephStateArray[c]}-text`);
-    let stateArea = document.getElementById(stephStateArray[c]);
+  gameboard.addEventListener("click", () => {
+    // place unit on "selected State"
+    boostLeftover--;
+    stephCurry.stateInfo.unitsInThatState.TX++;
+    howManyUnitsYouHavePlaced++;
+    selectedState = event.target.id;
+    getInnerResultBox.innerHTML = `You have placed ${howManyUnitsYouHavePlaced} units) on ${selectedState}`;
+    displayUnits();
 
-    if (stephUnitsArray[c] > 0) {
-      stateText.innerHTML = `${stephUnitsArray[c]}`;
-      // stateText.style.fill = "var(--warriors-gold)";
-      // stateArea.style.fill = "var(--warriors-blue)";
-    }
-  }
+    // reset the dice
+    const dieCollection = document.getElementsByClassName("die");
+    const dieArray = [...dieCollection];
+    dieArray.forEach((element) => (element.innerHTML = "?"));
+  });
 }
 
-stephCurry.stateInfo.unitsInThatState.TX += 5;
-
-attachAllEventListeners();
+boostUnits();
 displayUnits();
