@@ -61,6 +61,12 @@ svg {
   margin-bottom: 100px;
 }
 
+#xyz {
+  width: 60px;
+  position: relative;
+  right: 70%;
+}
+
 .country {
   fill: white;
   stroke-width: 0.97;

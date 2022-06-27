@@ -5,18 +5,36 @@ const stephCurry = {
     statesArray: [],
     statesCount: 0,
     unitsInThatState: {
-      TX: 330,
-      WA: 11,
-      OR: 12,
-      ID: 13,
-      MT: 14,
-      WY: 15,
-      CA: 16,
-      HI: 17,
-      AK: 18,
-      NV: 19,
-      CA: 20,
-      UT: 331,
+      TX: 0,
+      WA: 0,
+      OR: 0,
+      ID: 0,
+      MT: 0,
+      WY: 0,
+      CA: 0,
+      HI: 0,
+      AK: 0,
+      NV: 0,
+      UT: 0,
+      CO: 0,
+      NM: 0,
+      AZ: 0,
+      ND: 0,
+      SD: 0,
+      NE: 0,
+      KS: 0,
+      OK: 0,
+      MN: 0,
+      IA: 0,
+      MO: 0,
+      AR: 0,
+      LA: 0,
+      WI: 0,
+      IL: 0,
+      MI: 0,
+      IN: 0,
+      OH: 0,
+      AL: 0,
     },
   },
 };
@@ -28,27 +46,36 @@ const kyrieIrving = {
     statesArray: [],
     statesCount: 0,
     unitsInThatState: {
-      // TX: 0,
-      CO: 21,
-      NM: 22,
-      AZ: 23,
-      ND: 24,
-      SD: 25,
-      NE: 26,
-      KS: 27,
-      OK: 28,
-      MN: 29,
-      IA: 2,
-      MO: 3,
-      AR: 4,
-      LA: 5,
-      WI: 6,
-      IL: 7,
-      MI: 8,
-      IN: 9,
-      OH: 10,
-      AL: 98,
-      UT: 99,
+      TX: 0,
+      WA: 0,
+      OR: 0,
+      ID: 0,
+      MT: 0,
+      WY: 0,
+      CA: 0,
+      HI: 0,
+      AK: 0,
+      NV: 0,
+      UT: 0,
+      CO: 0,
+      NM: 0,
+      AZ: 0,
+      ND: 0,
+      SD: 0,
+      NE: 0,
+      KS: 0,
+      OK: 0,
+      MN: 0,
+      IA: 0,
+      MO: 0,
+      AR: 0,
+      LA: 0,
+      WI: 0,
+      IL: 0,
+      MI: 0,
+      IN: 0,
+      OH: 0,
+      AL: 0,
     },
   },
 };
@@ -583,7 +610,6 @@ function attachBoostEventListener() {
       resetDice();
     } else {
       getInnerResultBox.innerHTML = `You have used up all your units!`;
-      // displayUnits();
       resetDice();
     }
   });
@@ -638,12 +664,13 @@ function attachSelectedStateEventListener() {
   const svgGameboard = document.getElementById("svg");
   let selectedState;
 
-  svgGameboard.addEventListener("click", () => {
+  svgGameboard.addEventListener("click", (event) => {
     // display "selected State"
     console.log("You clicked on this selectedState: " + event.target.id);
     selectedState = event.target.id;
     getInnerResultBox.innerHTML = `You have selected: ${selectedState}`;
     resetDice();
+    showCoords(event);
   });
 } // AAAAAAAAAAAAAAAA if it's offense phase, attach attachSelectedStateEventListener
 
@@ -660,34 +687,49 @@ function displayUnits() {
   const stephUnitsArray = Object.values(stephCurry.stateInfo.unitsInThatState);
   // SVG Data
   // Add image icon
-  const targetSvg = document.getElementById("svg");
-  let newImage = document.createElement("image");
-  newImage.setAttribute("x", "385");
-  newImage.setAttribute("y", "285");
-  newImage.setAttribute("href", "./Images/Icons/gsw-logo.png");
-  targetSvg.appendChild(newImage);
+  var logoWarriors = "./Images/Icons/gsw-logo.png";
+  var logoNets = "./Images/Icons/brooklyn_logo.png";
+  // const targetSvg = document.getElementById("svg");
+  // let newImage = document.createElement("image");
+  // newImage.setAttribute("x", "385");
+  // newImage.setAttribute("y", "285");
+  // newImage.setAttribute("href", "./Images/Icons/gsw-logo.png");
+  // targetSvg.appendChild(newImage);
 
   // Kyrie
   for (let i = 0; i < kyrieStateArray.length; i++) {
     let stateText = document.getElementById(`${kyrieStateArray[i]}-text`);
     let stateArea = document.getElementById(kyrieStateArray[i]);
+    var stateIcon = document.getElementById(`${kyrieStateArray[i]}-icon`);
 
     if (kyrieUnitsArray[i] > 0) {
       stateText.innerHTML = `${kyrieUnitsArray[i]}`;
       stateText.style.fill = "var(--nets-black)";
       stateArea.style.fill = "var(--nets-white)";
       // Add image icon
+      stateIcon.setAttributeNS(
+        "http://www.w3.org/1999/xlink",
+        "href",
+        logoNets
+      );
     }
   }
 
   for (let c = 0; c < stephStateArray.length; c++) {
     let stateText = document.getElementById(`${stephStateArray[c]}-text`);
     let stateArea = document.getElementById(stephStateArray[c]);
+    var stateIcon = document.getElementById(`${stephStateArray[c]}-icon`);
 
     if (stephUnitsArray[c] > 0) {
       stateText.innerHTML = `${stephUnitsArray[c]}`;
       stateText.style.fill = "var(--warriors-gold)";
       stateArea.style.fill = "var(--warriors-blue)";
+      // Add image icon
+      stateIcon.setAttributeNS(
+        "http://www.w3.org/1999/xlink",
+        "href",
+        logoWarriors
+      );
     }
   }
 }
@@ -699,7 +741,14 @@ function resetDice() {
   dieArray.forEach((element) => (element.innerHTML = "?"));
 }
 
-// attachSelectedStateEventListener();
+function showCoords(event) {
+  var x = event.screenX;
+  var y = event.screenY;
+  var coords = "X coords: " + x + ", Y coords: " + y;
+  console.log(coords);
+  document.getElementById("coordinates").innerHTML = coords;
+}
 
 displayUnits();
 attachAllEventListeners();
+// attachSelectedStateEventListener();
