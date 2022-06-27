@@ -9,9 +9,9 @@ const stephCurry = {
       SD: 0,
       TN: 0,
       TX: 330,
-      UT: 331,
-      VT: 332,
-      VI: 333,
+      // UT: 331,
+      // VT: 332,
+      // VI: 333,
     },
   },
 };
@@ -23,37 +23,37 @@ const kyrieIrving = {
     statesArray: [],
     statesCount: 0,
     unitsInThatState: {
-      TX: 0,
-      WA: 11,
-      OR: 12,
-      ID: 13,
-      MT: 14,
-      WY: 15,
-      CA: 16,
-      HI: 17,
-      AK: 18,
-      NV: 19,
-      CA: 20,
-      CO: 21,
+      // TX: 0,
+      // WA: 11,
+      // OR: 12,
+      // ID: 13,
+      // MT: 14,
+      // WY: 15,
+      // CA: 16,
+      // HI: 17,
+      // AK: 18,
+      // NV: 19,
+      // CA: 20,
+      // CO: 21,
       NM: 22,
-      AZ: 23,
-      ND: 24,
-      SD: 25,
-      NE: 26,
-      KS: 27,
-      OK: 28,
-      MN: 29,
-      IA: 2,
-      MO: 3,
-      AR: 4,
-      LA: 5,
-      WI: 6,
-      IL: 7,
-      MI: 8,
-      IN: 9,
-      OH: 10,
-      AL: 98,
-      UT: 99,
+      // AZ: 23,
+      // ND: 24,
+      // SD: 25,
+      // NE: 26,
+      // KS: 27,
+      // OK: 28,
+      // MN: 29,
+      // IA: 2,
+      // MO: 3,
+      // AR: 4,
+      // LA: 5,
+      // WI: 6,
+      // IL: 7,
+      // MI: 8,
+      // IN: 9,
+      // OH: 10,
+      // AL: 98,
+      // UT: 99,
     },
   },
 };
@@ -202,30 +202,52 @@ function compareDice() {
   }
 }
 
+function attachBoostEventListener() {
+  const getInnerResultBox = document.getElementById("inner-result");
+  const svgGameboard = document.getElementById("svg");
+  const boostButtonCollection = document.getElementsByClassName("boost");
+  const boostButtonArray = [...boostButtonCollection];
+  const boostButtonSelect = boostButtonArray[0];
+  let selectedState;
+  let boostLeftover = stephCurry.boostUnits;
+  let CURRYCOUNTRY = stephCurry.stateInfo.unitsInThatState.TX; // man muss die genaue info da hinschreiben, die Variable bringt nichts
+  let howManyUnitsYouHavePlaced = 0;
+
+  boostButtonSelect.addEventListener(
+    "click",
+    () => {
+      // add 3 units
+      boostLeftover += 3; // wie kann man das nur 1x erlauben
+      selectedState = event.target.id;
+      getInnerResultBox.innerHTML = `You have ${boostLeftover} Units left.`;
+      resetDice();
+    },
+    { once: true }
+  );
+
+  svgGameboard.addEventListener("click", () => {
+    // place unit on "selected State"
+    if (boostLeftover > 0) {
+      boostLeftover--;
+      stephCurry.stateInfo.unitsInThatState.TX++;
+      howManyUnitsYouHavePlaced++;
+      selectedState = event.target.id;
+      getInnerResultBox.innerHTML = `You placed ${howManyUnitsYouHavePlaced} units on ${selectedState}`;
+      displayUnits();
+      resetDice();
+    } else {
+      getInnerResultBox.innerHTML = `You have used up all your units!`;
+      displayUnits();
+      resetDice();
+    }
+  });
+}
+
 function attachOffenseEventListener() {
   const offenseButtonCollection = document.getElementsByClassName("offense");
   const offenseButtonArray = [...offenseButtonCollection];
   const offenseButtonSelect = offenseButtonArray[0];
   offenseButtonSelect.addEventListener("click", () => rollDice());
-}
-
-function attachBoostEventListener() {
-  const boostButtonCollection = document.getElementsByClassName("boost");
-  const boostButtonArray = [...boostButtonCollection];
-  const boostButtonSelect = boostButtonArray[0];
-
-  // display "Boost stamina"
-  boostButtonSelect.addEventListener("click", () => {
-    finalResult = "The Warriors boost their stamina.";
-    innerResultCollection = document.getElementsByClassName("inner-result");
-    innerResultArray = [...innerResultCollection];
-    innerResultArray.forEach((element) => (element.innerHTML = finalResult));
-
-    // reset the dice
-    const dieCollection = document.getElementsByClassName("die");
-    const dieArray = [...dieCollection];
-    dieArray.forEach((element) => (element.innerHTML = "?"));
-  });
 }
 
 function attachEndturnEventListener() {
@@ -239,36 +261,28 @@ function attachEndturnEventListener() {
     innerResultCollection = document.getElementsByClassName("inner-result");
     innerResultArray = [...innerResultCollection];
     innerResultArray.forEach((element) => (element.innerHTML = finalResult));
-    // reset the dice
-    const dieCollection = document.getElementsByClassName("die");
-    const dieArray = [...dieCollection];
-    dieArray.forEach((element) => (element.innerHTML = "?"));
+    resetDice();
   });
 }
 
 function attachSelectedStateEventListener() {
   const getInnerResultBox = document.getElementById("inner-result");
-  const gameboard = document.getElementById("svg");
+  const svgGameboard = document.getElementById("svg");
   let selectedState;
 
-  gameboard.addEventListener("click", () => {
+  svgGameboard.addEventListener("click", () => {
     // display "selected State"
     console.log("You clicked on this selectedState: " + event.target.id);
     selectedState = event.target.id;
     getInnerResultBox.innerHTML = `You have selected: ${selectedState}`;
-
-    // reset the dice
-    const dieCollection = document.getElementsByClassName("die");
-    const dieArray = [...dieCollection];
-    dieArray.forEach((element) => (element.innerHTML = "?"));
+    resetDice();
   });
-}
+} // AAAAAAAAAAAAAAAA if it's offense phase, attach attachSelectedStateEventListener
 
 function attachAllEventListeners() {
-  attachOffenseEventListener();
   attachBoostEventListener();
+  attachOffenseEventListener();
   attachEndturnEventListener();
-  attachSelectedStateEventListener();
 }
 
 function displayUnits() {
@@ -310,8 +324,25 @@ function displayUnits() {
   }
 }
 
+function resetDice() {
+  // reset the dice
+  const dieCollection = document.getElementsByClassName("die");
+  const dieArray = [...dieCollection];
+  dieArray.forEach((element) => (element.innerHTML = "?"));
+}
+
+displayUnits(); // this blocks the eventlisteners
+attachAllEventListeners();
+
+//
+//
+//
+//
 // Info Console log
-/////////////////////////////////
+//
+//
+//
+//
 
 console.log(stephCurry.team);
 console.log(stephCurry.boostUnits);
@@ -326,48 +357,3 @@ console.log(stephCurry.stateInfo.unitsInThatState.TX);
 
 console.log(Object.keys(kyrieIrving.stateInfo.unitsInThatState));
 console.log(Object.values(kyrieIrving.stateInfo.unitsInThatState));
-
-// Info Console log
-/////////////////////////////////
-
-function boostUnits() {
-  const getInnerResultBox = document.getElementById("inner-result");
-  const gameboard = document.getElementById("svg");
-  const boostButtonCollection = document.getElementsByClassName("boost");
-  const boostButtonArray = [...boostButtonCollection];
-  const boostButtonSelect = boostButtonArray[0];
-  let selectedState;
-  let boostLeftover = stephCurry.boostUnits;
-  let CURRYCOUNTRY = stephCurry.stateInfo.unitsInThatState.TX;
-  let howManyUnitsYouHavePlaced = 0;
-
-  boostButtonSelect.addEventListener("click", () => {
-    // display "selected State"
-    boostLeftover += 3;
-    selectedState = event.target.id;
-    getInnerResultBox.innerHTML = `You have ${boostLeftover} Units left.`;
-
-    // reset the dice
-    const dieCollection = document.getElementsByClassName("die");
-    const dieArray = [...dieCollection];
-    dieArray.forEach((element) => (element.innerHTML = "?"));
-  });
-
-  gameboard.addEventListener("click", () => {
-    // place unit on "selected State"
-    boostLeftover--;
-    stephCurry.stateInfo.unitsInThatState.TX++;
-    howManyUnitsYouHavePlaced++;
-    selectedState = event.target.id;
-    getInnerResultBox.innerHTML = `You have placed ${howManyUnitsYouHavePlaced} units) on ${selectedState}`;
-    displayUnits();
-
-    // reset the dice
-    const dieCollection = document.getElementsByClassName("die");
-    const dieArray = [...dieCollection];
-    dieArray.forEach((element) => (element.innerHTML = "?"));
-  });
-}
-
-boostUnits();
-displayUnits();

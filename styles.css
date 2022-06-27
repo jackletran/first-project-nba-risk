@@ -54,7 +54,8 @@ h1 img {
 }
 
 svg {
-  background-image: var(--nba-background-image);
+  /* background-image: var(--nba-background-image); */
+  margin-right: 200px;
   background-position: center;
   background-size: 300px;
   margin-bottom: 100px;

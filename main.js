@@ -46,7 +46,7 @@ class Game {
   const offenseButtonArray = [...offenseButtonCollection];
   const offenseButtonSelect = offenseButtonArray[0];
   offenseButtonSelect.addEventListener("click", () => rollDice());
-}
+  }
 
   attachBoostEventListener() {
   const boostButtonCollection = document.getElementsByClassName("boost");
@@ -83,7 +83,7 @@ class Game {
     const dieArray = [...dieCollection];
     dieArray.forEach((element) => (element.innerHTML = "?"));
   });
-}
+  }
 
   attachSelectedStateEventListener() {
   const getInnerResultBox = document.getElementById("inner-result");
@@ -96,21 +96,60 @@ class Game {
     selectedState = event.target.id;
     getInnerResultBox.innerHTML = selectedState;
   });
-}
+  }
 
   attachAllEventListeners() {
   attachOffenseEventListener();
   attachBoostEventListener();
   attachEndturnEventListener();
   attachSelectedStateEventListener();
-}
+  }
   
 
   randomStateDistribution() {
     // randomly distribute all available states, assign how many troops to player1/2/3.dominatedStates.LOOP-THROUGH-EACH-STATE.unitsInThatState
   }
 
-  attachEventListeners() { // reference
+  displayUnits() {
+  const kyrieStateArray = Object.keys(kyrieIrving.stateInfo.unitsInThatState);
+  const kyrieUnitsArray = Object.values(kyrieIrving.stateInfo.unitsInThatState);
+  const stephStateArray = Object.keys(stephCurry.stateInfo.unitsInThatState);
+  const stephUnitsArray = Object.values(stephCurry.stateInfo.unitsInThatState);
+  // SVG Data
+  // Add image icon
+  const targetSvg = document.getElementById("svg");
+  let newImage = document.createElement("image");
+  newImage.setAttribute("x", "385");
+  newImage.setAttribute("y", "285");
+  newImage.setAttribute("href", "./Images/Icons/gsw-logo.png");
+  targetSvg.appendChild(newImage);
+
+  // Kyrie
+  for (let i = 0; i < kyrieStateArray.length; i++) {
+    let stateText = document.getElementById(`${kyrieStateArray[i]}-text`);
+    let stateArea = document.getElementById(kyrieStateArray[i]);
+
+    if (kyrieUnitsArray[i] > 0) {
+      stateText.innerHTML = `${kyrieUnitsArray[i]}`;
+      stateText.style.fill = "var(--nets-black)";
+      stateArea.style.fill = "var(--nets-white)";
+      // Add image icon
+    }
+  }
+
+  for (let c = 0; c < stephStateArray.length; c++) {
+    let stateText = document.getElementById(`${stephStateArray[c]}-text`);
+    let stateArea = document.getElementById(stephStateArray[c]);
+
+    if (stephUnitsArray[c] > 0) {
+      stateText.innerHTML = `${stephUnitsArray[c]}`;
+      stateText.style.fill = "var(--warriors-gold)";
+      stateArea.style.fill = "var(--warriors-blue)";
+    }
+  }
+  }
+
+  attachEventListeners() { // reference reference reference maybe use to select countries
     document.addEventListener("click", (event) => {
       // save first country in array, then save second country and let them fight/compare
       if (event.key === "ArrowLeft") {
