@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap");
+/* Basic Styles */
 
 :root {
   --warriors-blue: #1d428a;
@@ -29,35 +29,60 @@ body {
   font-family: fantasy;
 }
 
-text {
-  font: italic 1rem sans-serif;
-  fill: black;
-  stroke-width: 0.1;
-}
-
-image {
-  width: 20px;
-}
-
-.small {
-  font: italic 13px sans-serif;
-}
-
 h1 {
-  color: var(--warriors-gold);
   font-size: 4rem;
-  text-shadow: var(--warriors-blue) 4px 3px 2px;
 }
 
 h1 img {
-  width: 50px;
+  width: 3rem;
 }
+
+/* Team Styling / Team Colorways */
+
+/* Golden State Warriors Colorway */
+
+h1 {
+  color: var(--warriors-gold);
+  text-shadow: var(--warriors-blue) 4px 3px 2px;
+}
+
+.die.attack {
+  background-color: var(--clippers-red);
+}
+
+.die.defense {
+  background-color: var(--clippers-blue);
+}
+
+.btn {
+  color: var(--warriors-gold);
+  text-shadow: #020819 4px 3px 2px;
+}
+
+.btn.boost {
+  background-image: url(./Images/Player_Images/gsw_boost.webp);
+}
+
+.btn.offense {
+  background-image: url(./Images/Player_Images/gsw_attack.webp);
+}
+
+.btn.endturn {
+  background-image: url(./Images/Player_Images/gsw_endturn.jpg);
+}
+
+.inner-result {
+  color: var(--warriors-gold);
+  background-color: var(--warriors-blue);
+  text-shadow: #020819 4px 3px 2px;
+}
+
+/* SVG Styling */
 
 svg {
   /* background-image: var(--nba-background-image); */
-  margin-right: 200px;
-  background-position: center;
-  background-size: 300px;
+  /* background-position: center; */
+  /* background-size: 300px; */
   margin-bottom: 100px;
 }
 
@@ -69,7 +94,20 @@ svg {
 .country:hover {
   stroke-width: 3.97;
   cursor: pointer;
+  stroke: yellow;
 }
+
+text {
+  font: italic 1rem sans-serif;
+  fill: white;
+  stroke-width: 0.2;
+}
+
+image {
+  width: 20px;
+}
+
+/* Dice Styling */
 
 .display-dice {
   display: flex;
@@ -82,77 +120,80 @@ svg {
   width: 50px;
   height: 50px;
   margin: 10px;
-  display: inline-block;
   border: 1px solid black;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  font-family: fantasy;
   color: white;
   text-shadow: #020819 4px 3px 2px;
 }
 
-.die.attack {
+/* .die.attack {
   background-color: var(--clippers-red);
 }
 
 .die.defense {
   background-color: var(--clippers-blue);
+} */
+
+/* Button Styling */
+
+.control {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 4rem 0;
 }
 
 .btn {
-  padding: 100px 110px;
-  margin: 20px 40px;
-  color: var(--warriors-gold);
+  width: 30vw;
+  height: 40vh;
   font-weight: bold;
   font-size: 3rem;
   font-family: fantasy;
   outline: 1px solid black;
-  text-shadow: #020819 4px 3px 2px;
 }
 
 .btn.boost {
-  background-image: url(./Images/Player_Images/gsw_boost.webp);
   background-size: cover;
 }
 
 .btn.offense {
-  background-image: url(./Images/Player_Images/gsw_attack.webp);
   background-size: cover;
 }
 
 .btn.endturn {
-  background-image: url(./Images/Player_Images/gsw_endturn.jpg);
   background-size: cover;
 }
 
 .btn:hover {
-  outline: 2px solid var(--warriors-gold);
+  outline: 2px solid gold;
   cursor: pointer;
 }
+
+/* Result Box Styling */
 
 .display-result {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin: 50px;
+  margin: 4rem;
 }
 
 .inner-result {
   display: flex;
-  width: 500px;
-  height: 150px;
-  color: var(--warriors-gold);
-  background-color: var(--warriors-blue);
+  width: 60vw;
+  height: 12rem;
   align-items: center;
   text-align: center;
   text-transform: uppercase;
   justify-content: center;
   font-size: 3rem;
-  text-shadow: #020819 4px 3px 2px;
 }
+
+/* Continent Styling / Division Styling */
 
 .pacific,
 .continent-1 {
@@ -161,22 +202,22 @@ svg {
 
 .mountain,
 .continent-2 {
-  fill: aqua;
+  fill: darkgoldenrod;
 }
 
 .wnorthcentral,
 .continent-3 {
-  fill: yellowgreen;
+  fill: forestgreen;
 }
 
 .wsouthcentral,
 .continent-4 {
-  fill: yellow;
+  fill: crimson;
 }
 
 .enorthcentral,
 .continent-5 {
-  fill: crimson;
+  fill: cadetblue;
 }
 
 .esouthcentral,

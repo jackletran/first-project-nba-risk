@@ -431,7 +431,7 @@ let irving = newGame.player2;
 
 console.log(irving);
 
-newGame.curry.attachAllEventListeners();
+newGame.player1.attachAllEventListeners();
 
 // curry.myTurn = false;
 // irving.myTurn = true;
