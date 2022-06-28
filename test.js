@@ -152,19 +152,16 @@ function rollDice() {
 
 function rollAttackerDice() {
   let attack1 = 1 + Math.floor(6 * Math.random());
-  const die1Collection = document.getElementsByClassName("attack-die-one");
-  const die1Array = [...die1Collection];
-  die1Array.forEach((element) => (element.innerHTML = attack1));
+  const die1 = document.getElementById("attack-die-one");
+  die1.innerHTML = attack1;
 
   let attack2 = 1 + Math.floor(6 * Math.random());
-  const die2Collection = document.getElementsByClassName("attack-die-two");
-  const die2Array = [...die2Collection];
-  die2Array.forEach((element) => (element.innerHTML = attack2));
+  const die2 = document.getElementById("attack-die-two");
+  die2.innerHTML = attack2;
 
   let attack3 = 1 + Math.floor(6 * Math.random());
-  const die3Collection = document.getElementsByClassName("attack-die-three");
-  const die3Array = [...die3Collection];
-  die3Array.forEach((element) => (element.innerHTML = attack3));
+  const die3 = document.getElementById("attack-die-three");
+  die3.innerHTML = attack3;
 
   resultAttack = [attack1, attack2, attack3];
 
@@ -175,14 +172,12 @@ function rollAttackerDice() {
 
 function rollDefenderDice() {
   let defense1 = 1 + Math.floor(6 * Math.random());
-  const die4Collection = document.getElementsByClassName("defense-die-one");
-  const die4Array = [...die4Collection];
-  die4Array.forEach((element) => (element.innerHTML = defense1));
+  const die4 = document.getElementById("defense-die-one");
+  die4.innerHTML = defense1;
 
   let defense2 = 1 + Math.floor(6 * Math.random());
-  const die5Collection = document.getElementsByClassName("defense-die-two");
-  const die5Array = [...die5Collection];
-  die5Array.forEach((element) => (element.innerHTML = defense2));
+  const die5 = document.getElementById("defense-die-two");
+  die5.innerHTML = defense2;
 
   resultDefense = [defense1, defense2];
 
@@ -193,36 +188,32 @@ function rollDefenderDice() {
 
 function compareDice() {
   let finalResult;
-  let innerResultCollection;
+  let innerResultBox;
   let innerResultArray;
   switch (true) {
     case resultAttack[0] > resultDefense[0] &&
       resultAttack[1] > resultDefense[1]:
       finalResult = "Offense wins both!!!";
-      innerResultCollection = document.getElementsByClassName("inner-result");
-      innerResultArray = [...innerResultCollection];
-      innerResultArray.forEach((element) => (element.innerHTML = finalResult));
+      innerResultBox = document.getElementById("inner-result");
+      innerResultBox.innerHTML = finalResult;
       break;
     case resultAttack[0] <= resultDefense[0] &&
       resultAttack[1] <= resultDefense[1]:
       finalResult = "Defense wins both!!!";
-      innerResultCollection = document.getElementsByClassName("inner-result");
-      innerResultArray = [...innerResultCollection];
-      innerResultArray.forEach((element) => (element.innerHTML = finalResult));
+      innerResultBox = document.getElementById("inner-result");
+      innerResultBox.innerHTML = finalResult;
       break;
     case resultAttack[0] > resultDefense[0] &&
       resultAttack[1] <= resultDefense[1]:
       finalResult = "Offense wins first, Defense wins second!!!";
-      innerResultCollection = document.getElementsByClassName("inner-result");
-      innerResultArray = [...innerResultCollection];
-      innerResultArray.forEach((element) => (element.innerHTML = finalResult));
+      innerResultBox = document.getElementById("inner-result");
+      innerResultBox.innerHTML = finalResult;
       break;
     case resultAttack[0] <= resultDefense[0] &&
       resultAttack[1] > resultDefense[1]:
       finalResult = "Defense wins first, Offense wins second!!!";
-      innerResultCollection = document.getElementsByClassName("inner-result");
-      innerResultArray = [...innerResultCollection];
-      innerResultArray.forEach((element) => (element.innerHTML = finalResult));
+      innerResultBox = document.getElementById("inner-result");
+      innerResultBox.innerHTML = finalResult;
       break;
     default:
       console.log("something is wrong, you are terrible");
@@ -240,9 +231,6 @@ function attachBoostEventListener() {
   let boostLeftover = stephCurry.boostUnits;
   let howManyUnitsYouHavePlaced = 0;
   const stephCurryStates = Object.keys(stephCurry.stateInfo.unitsInThatState);
-  const stephCurryUnitsInThatState = Object.values(
-    stephCurry.stateInfo.unitsInThatState
-  );
 
   boostButtonSelect.addEventListener(
     "click",
@@ -305,23 +293,18 @@ console.log(Object.keys(stephCurry.stateInfo.unitsInThatState));
 console.log(Object.values(stephCurry.stateInfo.unitsInThatState));
 
 function attachOffenseEventListener() {
-  const offenseButtonCollection = document.getElementsByClassName("offense");
-  const offenseButtonArray = [...offenseButtonCollection];
-  const offenseButtonSelect = offenseButtonArray[0];
-  offenseButtonSelect.addEventListener("click", () => rollDice());
+  const offenseButton = document.getElementById("boost-btn");
+  offenseButton.addEventListener("click", () => rollDice());
 }
 
 function attachEndturnEventListener() {
-  const endturnButtonCollection = document.getElementsByClassName("endturn");
-  const endturnButtonArray = [...endturnButtonCollection];
-  const endturnButtonSelect = endturnButtonArray[0];
+  const endturnButton = document.getElementById("endturn-btn");
 
-  endturnButtonSelect.addEventListener("click", () => {
+  endturnButton.addEventListener("click", () => {
     // display "End turn"
     finalResult = "The Warriors ended their turn.";
-    innerResultCollection = document.getElementsByClassName("inner-result");
-    innerResultArray = [...innerResultCollection];
-    innerResultArray.forEach((element) => (element.innerHTML = finalResult));
+    innerResultBox = document.getElementById("inner-result");
+    innerResultBox.innerHTML = finalResult;
     resetDice();
   });
 }
@@ -406,14 +389,6 @@ function resetDice() {
   const dieCollection = document.getElementsByClassName("die");
   const dieArray = [...dieCollection];
   dieArray.forEach((element) => (element.innerHTML = "?"));
-}
-
-function showCoords(event) {
-  var x = event.screenX;
-  var y = event.screenY;
-  var coords = "X coords: " + x + ", Y coords: " + y;
-  console.log(coords);
-  document.getElementById("coordinates").innerHTML = coords;
 }
 
 displayUnits();
