@@ -189,7 +189,6 @@ function rollDefenderDice() {
 function compareDice() {
   let finalResult;
   let innerResultBox;
-  let innerResultArray;
   switch (true) {
     case resultAttack[0] > resultDefense[0] &&
       resultAttack[1] > resultDefense[1]:
@@ -270,30 +269,8 @@ function attachBoostEventListener() {
   });
 }
 
-//
-//
-//
-//
-// Info Console log
-//
-//
-//
-//
-
-console.log(stephCurry.team);
-console.log(stephCurry.boostUnits);
-console.log(stephCurry.stateInfo);
-console.log(stephCurry.stateInfo.statesArray);
-console.log(stephCurry.stateInfo.statesCount);
-console.log(stephCurry.stateInfo.unitsInThatState);
-console.log(stephCurry.stateInfo.unitsInThatState.TX);
-console.log(stephCurry.stateInfo.unitsInThatState.UT);
-
-console.log(Object.keys(stephCurry.stateInfo.unitsInThatState));
-console.log(Object.values(stephCurry.stateInfo.unitsInThatState));
-
 function attachOffenseEventListener() {
-  const offenseButton = document.getElementById("boost-btn");
+  const offenseButton = document.getElementById("offense-btn");
   offenseButton.addEventListener("click", () => rollDice());
 }
 
@@ -394,3 +371,25 @@ function resetDice() {
 displayUnits();
 attachAllEventListeners();
 // attachSelectedStateEventListener();
+
+//
+//
+//
+//
+// Info Console log
+//
+//
+//
+//
+
+console.log(stephCurry.team);
+console.log(stephCurry.boostUnits);
+console.log(stephCurry.stateInfo);
+console.log(stephCurry.stateInfo.statesArray);
+console.log(stephCurry.stateInfo.statesCount);
+console.log(stephCurry.stateInfo.unitsInThatState);
+console.log(stephCurry.stateInfo.unitsInThatState.TX);
+console.log(stephCurry.stateInfo.unitsInThatState.UT);
+
+console.log(Object.keys(stephCurry.stateInfo.unitsInThatState));
+console.log(Object.values(stephCurry.stateInfo.unitsInThatState));
