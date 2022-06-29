@@ -41,40 +41,77 @@ h1 img {
 
 /* Golden State Warriors Colorway */
 
-h1 {
+h1.warriorscolway {
   color: var(--warriors-gold);
   text-shadow: var(--warriors-blue) 4px 3px 2px;
 }
 
-.die.attack {
+.die.attack.warriorscolway {
   background-color: var(--clippers-red);
 }
 
-.die.defense {
+.die.defense.warriorscolway {
   background-color: var(--clippers-blue);
 }
 
-.btn {
+.btn.warriorscolway {
   color: var(--warriors-gold);
   text-shadow: #020819 4px 3px 2px;
 }
 
-.btn.boost {
+.btn.boost.warriorscolway {
   background-image: url(./Images/Player_Images/gsw_boost.webp);
 }
 
-.btn.offense {
+.btn.offense.warriorscolway {
   background-image: url(./Images/Player_Images/gsw_attack.webp);
 }
 
-.btn.endturn {
+.btn.endturn.warriorscolway {
   background-image: url(./Images/Player_Images/gsw_endturn.jpg);
 }
 
-.inner-result {
+.inner-result.warriorscolway {
   color: var(--warriors-gold);
   background-color: var(--warriors-blue);
   text-shadow: #020819 4px 3px 2px;
+}
+
+/* Brooklyn Nets Colorway */
+
+h1.netscolway {
+  color: var(--nets-white);
+  text-shadow: var(--nets-black) 4px 3px 2px;
+}
+
+.die.attack.netscolway {
+  background-color: var(--clippers-red);
+}
+
+.die.defense.netscolway {
+  background-color: var(--clippers-blue);
+}
+
+.btn.netscolway {
+  color: var(--nets-white);
+  text-shadow: #020819 4px 3px 2px;
+}
+
+.btn.boost.netscolway {
+  background-image: url(./Images/Player_Images/nets_boost.webp);
+}
+
+.btn.offense.netscolway {
+  background-image: url(./Images/Player_Images/nets_offense3.jpg);
+}
+
+.btn.endturn.netscolway {
+  background-image: url(./Images/Player_Images/nets_endturn2.jpg);
+}
+
+.inner-result.netscolway {
+  color: var(--nets-black);
+  background-color: var(--nets-white);
 }
 
 /* SVG Styling */

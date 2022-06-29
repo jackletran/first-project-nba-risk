@@ -1,6 +1,6 @@
 class Game {
   constructor() {
-    this.player1 = this.declarePlayer1();
+    this.player1 = this.declarePlayer1(); // = newGame.player1 = newGame.curry
     this.player2 = this.declarePlayer2();
   }
 
@@ -47,61 +47,94 @@ class Game {
   }
 
   displayUnits() {
-    const kyrieStateArray = Object.keys(kyrieIrving.stateInfo.unitsInThatState);
-    const kyrieUnitsArray = Object.values(
-      kyrieIrving.stateInfo.unitsInThatState
+    const playerOneStateArray = Object.keys(
+      this.player1.stateInfo.unitsInThatState
     );
-    const stephStateArray = Object.keys(stephCurry.stateInfo.unitsInThatState);
-    const stephUnitsArray = Object.values(
-      stephCurry.stateInfo.unitsInThatState
+    const playerOneUnitsArray = Object.values(
+      this.player1.stateInfo.unitsInThatState
+    );
+    const playerTwoStateArray = Object.keys(
+      this.player2.stateInfo.unitsInThatState
+    );
+    const playerTwoUnitsArray = Object.values(
+      this.player2.stateInfo.unitsInThatState
     );
     // SVG Data
     // Add image icon
-    const targetSvg = document.getElementById("svg");
-    let newImage = document.createElement("image");
-    newImage.setAttribute("x", "385");
-    newImage.setAttribute("y", "285");
-    newImage.setAttribute("href", "./Images/Icons/gsw-logo.png");
-    targetSvg.appendChild(newImage);
+    // const targetSvg = document.getElementById("svg");
+    // let newImage = document.createElement("image");
+    // newImage.setAttribute("x", "385");
+    // newImage.setAttribute("y", "285");
+    // newImage.setAttribute("href", "./Images/Icons/gsw-logo.png");
+    // targetSvg.appendChild(newImage);
 
-    // Kyrie
-    for (let i = 0; i < kyrieStateArray.length; i++) {
-      let stateText = document.getElementById(`${kyrieStateArray[i]}-text`);
-      let stateArea = document.getElementById(kyrieStateArray[i]);
+    // Player 1
+    for (let c = 0; c < playerOneStateArray.length; c++) {
+      let stateText = document.getElementById(`${playerOneStateArray[c]}-text`);
+      let stateArea = document.getElementById(playerOneStateArray[c]);
 
-      if (kyrieUnitsArray[i] > 0) {
-        stateText.innerHTML = `${kyrieUnitsArray[i]}`;
-        stateText.style.fill = "var(--nets-black)";
-        stateArea.style.fill = "var(--nets-white)";
-        // Add image icon
-      }
-    }
-
-    for (let c = 0; c < stephStateArray.length; c++) {
-      let stateText = document.getElementById(`${stephStateArray[c]}-text`);
-      let stateArea = document.getElementById(stephStateArray[c]);
-
-      if (stephUnitsArray[c] > 0) {
+      if (playerOneUnitsArray[c] > 0) {
         stateText.innerHTML = `${stephUnitsArray[c]}`;
         stateText.style.fill = "var(--warriors-gold)";
         stateArea.style.fill = "var(--warriors-blue)";
+      }
+    }
+
+    // Player 2
+    for (let i = 0; i < playerTwoStateArray.length; i++) {
+      let stateText = document.getElementById(`${playerTwoStateArray[i]}-text`);
+      let stateArea = document.getElementById(playerTwoStateArray[i]);
+
+      if (playerTwoUnitsArray[i] > 0) {
+        stateText.innerHTML = `${playerTwoUnitsArray[i]}`;
+        stateText.style.fill = "var(--nets-black)";
+        stateArea.style.fill = "var(--nets-white)";
+        // Add image icon
       }
     }
   }
 
   displayTurn() {
     switch (true) {
-      case curry.myTurn:
-        document.getElementById("inner-result").innerHTML = "Curry's turn.";
+      case this.player1.myTurn:
+        document.getElementById("inner-result").innerHTML = "Player 1's turn.";
         break;
-      case irving.myTurn:
-        document.getElementById("inner-result").innerHTML = "Irving's turn.";
+      case this.player2.myTurn:
+        document.getElementById("inner-result").innerHTML = "Player 2's turn.";
         break;
       default:
         document.getElementById("inner-result").innerHTML =
           "Nobody's turn yet.";
         break;
     }
+  }
+
+  attachEndturnEventListener() {
+    const endturnButton = document.getElementById("endturn-btn");
+    let turn = 1; // always starts with first turn - player1 always starts, if odd = player1.myturn is true, if even, player2.myturn is true
+
+    endturnButton.addEventListener("click", () => {
+      // display "End turn"
+      if (turn % 2 !== 0) {
+        turn++;
+        this.player1.myTurn = false;
+        this.player2.myTurn = true;
+        let finalResult = "The Warriors ended their turn.";
+        let innerResultBox = document.getElementById("inner-result");
+        innerResultBox.innerHTML = finalResult;
+        this.player1.resetDice();
+        setTimeout(newGame.displayTurn, 2000);
+      } else if (turn % 2 === 0) {
+        turn++;
+        this.player1.myTurn = true;
+        this.player2.myTurn = false;
+        let finalResult = "The Nets ended their turn.";
+        let innerResultBox = document.getElementById("inner-result");
+        innerResultBox.innerHTML = finalResult;
+        this.player2.resetDice();
+        setTimeout(newGame.displayTurn, 2000);
+      }
+    });
   }
 }
 
@@ -298,18 +331,6 @@ class Player {
     offenseButton.addEventListener("click", () => this.rollDice());
   }
 
-  attachEndturnEventListener() {
-    const endturnButton = document.getElementById("endturn-btn");
-
-    endturnButton.addEventListener("click", () => {
-      // display "End turn"
-      let finalResult = "The Warriors ended their turn.";
-      let innerResultBox = document.getElementById("inner-result");
-      innerResultBox.innerHTML = finalResult;
-      this.resetDice();
-    });
-  }
-
   attachSelectedStateEventListener() {
     const getInnerResultBox = document.getElementById("inner-result");
     const svgGameboard = document.getElementById("svg");
@@ -327,7 +348,6 @@ class Player {
   attachAllEventListeners() {
     this.attachBoostEventListener();
     this.attachOffenseEventListener();
-    this.attachEndturnEventListener();
   }
 
   displayUnits() {
@@ -427,9 +447,8 @@ class Player {
 
 const newGame = new Game();
 newGame.start();
-let irving = newGame.player2;
-
-console.log(irving);
+console.log(newGame.player1);
+console.log(newGame.irving);
 
 newGame.player1.attachAllEventListeners();
 
@@ -437,8 +456,8 @@ newGame.player1.attachAllEventListeners();
 // irving.myTurn = true;
 // console.log(curry);
 // console.log(irving);
-// curry.attachAllEventListeners();
 
+newGame.attachEndturnEventListener();
 newGame.displayTurn();
 
 // displayUnits();
