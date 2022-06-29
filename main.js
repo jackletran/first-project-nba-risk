@@ -17,6 +17,11 @@ class Game {
   start() {
     this.declarePlayer1();
     this.declarePlayer2();
+    this.shuffleStates();
+    this.randomStateAssignment();
+    this.displayUnits();
+    this.displayTurn();
+    this.attachEndturnEventListener();
   }
 
   selectTeam(playerX) {
@@ -42,8 +47,41 @@ class Game {
     });
   }
 
-  randomStateDistribution() {
+  shuffleStates() {
     // randomly distribute all available states, assign how many troops to player1/2/3.dominatedStates.LOOP-THROUGH-EACH-STATE.unitsInThatState
+    let shuffleStatesArray = Object.keys(
+      this.player1.stateInfo.unitsInThatState
+    );
+    let currentIndex = shuffleStatesArray.length,
+      randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [shuffleStatesArray[currentIndex], shuffleStatesArray[randomIndex]] = [
+        shuffleStatesArray[randomIndex],
+        shuffleStatesArray[currentIndex],
+      ];
+    }
+
+    return shuffleStatesArray;
+  }
+
+  randomStateAssignment() {
+    let shuffledStates = this.shuffleStates();
+    let statesLength = shuffledStates.length;
+    let halfOfStates = Math.floor(shuffledStates.length / 2);
+
+    for (let i = 0; i < halfOfStates; i++) {
+      this.player1.stateInfo.unitsInThatState[`${shuffledStates[i]}`]++;
+    }
+    for (let c = halfOfStates; c < statesLength; c++) {
+      this.player2.stateInfo.unitsInThatState[`${shuffledStates[c]}`]++;
+    }
   }
 
   displayUnits() {
@@ -72,11 +110,20 @@ class Game {
     for (let c = 0; c < playerOneStateArray.length; c++) {
       let stateText = document.getElementById(`${playerOneStateArray[c]}-text`);
       let stateArea = document.getElementById(playerOneStateArray[c]);
+      let stateIcon = document.getElementById(`${playerOneStateArray[c]}-icon`);
+      const logoWarriors = "./Images/Icons/gsw-logo.png";
+      const logoNets = "./Images/Icons/brooklyn_logo.png";
 
       if (playerOneUnitsArray[c] > 0) {
-        stateText.innerHTML = `${stephUnitsArray[c]}`;
+        stateText.innerHTML = `${playerOneUnitsArray[c]}`;
         stateText.style.fill = "var(--warriors-gold)";
         stateArea.style.fill = "var(--warriors-blue)";
+        // Add image icon
+        stateIcon.setAttributeNS(
+          "http://www.w3.org/1999/xlink",
+          "href",
+          logoWarriors
+        );
       }
     }
 
@@ -84,12 +131,20 @@ class Game {
     for (let i = 0; i < playerTwoStateArray.length; i++) {
       let stateText = document.getElementById(`${playerTwoStateArray[i]}-text`);
       let stateArea = document.getElementById(playerTwoStateArray[i]);
+      let stateIcon = document.getElementById(`${playerTwoStateArray[i]}-icon`);
+      const logoWarriors = "./Images/Icons/gsw-logo.png";
+      const logoNets = "./Images/Icons/brooklyn_logo.png";
 
       if (playerTwoUnitsArray[i] > 0) {
         stateText.innerHTML = `${playerTwoUnitsArray[i]}`;
         stateText.style.fill = "var(--nets-black)";
         stateArea.style.fill = "var(--nets-white)";
         // Add image icon
+        stateIcon.setAttributeNS(
+          "http://www.w3.org/1999/xlink",
+          "href",
+          logoNets
+        );
       }
     }
   }
@@ -368,85 +423,6 @@ class Player {
     this.attachOffenseEventListener();
   }
 
-  displayUnits() {
-    // const kyrieStateArray = Object.keys(kyrieIrving.stateInfo.unitsInThatState);
-    // const kyrieUnitsArray = Object.values(
-    //   kyrieIrving.stateInfo.unitsInThatState
-    // );
-    // const stephStateArray = Object.keys(stephCurry.stateInfo.unitsInThatState);
-    // const stephUnitsArray = Object.values(
-    //   stephCurry.stateInfo.unitsInThatState
-    // );
-    // above are unnecessary!!!
-    const stateArray = Object.keys(this.stateInfo.unitsInThatState);
-    const unitsArray = Object.values(this.stateInfo.unitsInThatState);
-    // SVG Data
-    // Add image icon
-    var logoWarriors = "./Images/Icons/gsw-logo.png";
-    var logoNets = "./Images/Icons/brooklyn_logo.png";
-    // const targetSvg = document.getElementById("svg");
-    // let newImage = document.createElement("image");
-    // newImage.setAttribute("x", "385");
-    // newImage.setAttribute("y", "285");
-    // newImage.setAttribute("href", "./Images/Icons/gsw-logo.png");
-    // targetSvg.appendChild(newImage);
-
-    for (let i = 0; i < stateArray.length; i++) {
-      let stateText = document.getElementById(`${stateArray[i]}-text`);
-      let stateArea = document.getElementById(stateArray[i]);
-      var stateIcon = document.getElementById(`${stateArray[i]}-icon`);
-
-      if (unitsArray[i] > 0) {
-        stateText.innerHTML = `${unitsArray[i]}`;
-        stateText.style.fill = "var(--warriors-gold)";
-        stateArea.style.fill = "var(--warriors-blue)";
-        // Add image icon
-        stateIcon.setAttributeNS(
-          "http://www.w3.org/1999/xlink",
-          "href",
-          logoWarriors
-        );
-      }
-    }
-
-    // // Kyrie
-    // for (let i = 0; i < kyrieStateArray.length; i++) {
-    //   let stateText = document.getElementById(`${kyrieStateArray[i]}-text`);
-    //   let stateArea = document.getElementById(kyrieStateArray[i]);
-    //   var stateIcon = document.getElementById(`${kyrieStateArray[i]}-icon`);
-
-    //   if (kyrieUnitsArray[i] > 0) {
-    //     stateText.innerHTML = `${kyrieUnitsArray[i]}`;
-    //     stateText.style.fill = "var(--nets-black)";
-    //     stateArea.style.fill = "var(--nets-white)";
-    //     // Add image icon
-    //     stateIcon.setAttributeNS(
-    //       "http://www.w3.org/1999/xlink",
-    //       "href",
-    //       logoNets
-    //     );
-    //   }
-    // }
-
-    // for (let c = 0; c < stephStateArray.length; c++) {
-    //   let stateText = document.getElementById(`${stephStateArray[c]}-text`);
-    //   let stateArea = document.getElementById(stephStateArray[c]);
-    //   var stateIcon = document.getElementById(`${stephStateArray[c]}-icon`);
-
-    //   if (stephUnitsArray[c] > 0) {
-    //     stateText.innerHTML = `${stephUnitsArray[c]}`;
-    //     stateText.style.fill = "var(--warriors-gold)";
-    //     stateArea.style.fill = "var(--warriors-blue)";
-    //     // Add image icon
-    //     stateIcon.setAttributeNS(
-    //       "http://www.w3.org/1999/xlink",
-    //       "href",
-    //       logoWarriors
-    //     );
-    //   }
-    // }
-  }
-
   resetDice() {
     // reset the dice
     const dieCollection = document.getElementsByClassName("die");
@@ -466,17 +442,15 @@ class Player {
 const newGame = new Game();
 newGame.start();
 console.log(newGame.player1);
-console.log(newGame.irving);
+console.log(Object.keys(newGame.player1.stateInfo.unitsInThatState));
+console.log(newGame.shuffleStates());
+console.log(newGame.randomStateAssignment());
 
-newGame.player1.attachAllEventListeners();
+// newGame.player1.attachAllEventListeners();
 
-// curry.myTurn = false;
-// irving.myTurn = true;
-// console.log(curry);
-// console.log(irving);
-
-newGame.attachEndturnEventListener();
-newGame.displayTurn();
+// newGame.attachEndturnEventListener();
+// newGame.displayTurn();
+// newGame.shuffleStates();
 
 // displayUnits();
 // attachAllEventListeners();
