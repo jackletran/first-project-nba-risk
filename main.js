@@ -121,9 +121,9 @@ class Game {
         turn++;
         this.player1.myTurn = false;
         this.player2.myTurn = true;
-        let finalResult = "The Warriors ended their turn.";
-        let innerResultBox = document.getElementById("inner-result");
-        innerResultBox.innerHTML = finalResult;
+        // let finalResult = "The Warriors ended their turn.";
+        // let innerResultBox = document.getElementById("inner-result");
+        // innerResultBox.innerHTML = finalResult;
 
         // Change colorways
         colorwayElements.forEach((element) => {
@@ -132,14 +132,15 @@ class Game {
         });
         //
         this.player1.resetDice();
-        setTimeout(newGame.displayTurn, 2000);
+        this.displayTurn();
+        // setTimeout(newGame.displayTurn, 2000);
       } else if (turn % 2 === 0) {
         turn++;
         this.player1.myTurn = true;
         this.player2.myTurn = false;
-        let finalResult = "The Nets ended their turn.";
-        let innerResultBox = document.getElementById("inner-result");
-        innerResultBox.innerHTML = finalResult;
+        // let finalResult = "The Nets ended their turn.";
+        // let innerResultBox = document.getElementById("inner-result");
+        // innerResultBox.innerHTML = finalResult;
         // Change colorways
         colorwayElements.forEach((element) => {
           element.classList.remove("netscolway");
@@ -147,8 +148,10 @@ class Game {
         });
         //
         this.player2.resetDice();
-        setTimeout(newGame.displayTurn, 2000);
+        this.displayTurn();
+        // setTimeout(newGame.displayTurn, 2000);
       }
+      // setTimeout(newGame.displayTurn, 2000);
     });
   } // fix timeout!!!
 }
