@@ -112,6 +112,8 @@ class Game {
   attachEndturnEventListener() {
     const endturnButton = document.getElementById("endturn-btn");
     let turn = 1; // always starts with first turn - player1 always starts, if odd = player1.myturn is true, if even, player2.myturn is true
+    // get all elements with colorway class (.warriorscolway or .netscolway) forEach remove and add colorway, querySelectorAll
+    let colorwayElements = document.querySelectorAll(".colorway");
 
     endturnButton.addEventListener("click", () => {
       // display "End turn"
@@ -122,6 +124,13 @@ class Game {
         let finalResult = "The Warriors ended their turn.";
         let innerResultBox = document.getElementById("inner-result");
         innerResultBox.innerHTML = finalResult;
+
+        // Change colorways
+        colorwayElements.forEach((element) => {
+          element.classList.remove("warriorscolway");
+          element.classList.add("netscolway");
+        });
+        //
         this.player1.resetDice();
         setTimeout(newGame.displayTurn, 2000);
       } else if (turn % 2 === 0) {
@@ -131,11 +140,17 @@ class Game {
         let finalResult = "The Nets ended their turn.";
         let innerResultBox = document.getElementById("inner-result");
         innerResultBox.innerHTML = finalResult;
+        // Change colorways
+        colorwayElements.forEach((element) => {
+          element.classList.remove("netscolway");
+          element.classList.add("warriorscolway");
+        });
+        //
         this.player2.resetDice();
         setTimeout(newGame.displayTurn, 2000);
       }
     });
-  }
+  } // fix timeout!!!
 }
 
 class Player {
@@ -324,7 +339,7 @@ class Player {
         this.resetDice();
       }
     });
-  }
+  } //make that you cannot click on svg or text!!!
 
   attachOffenseEventListener() {
     const offenseButton = document.getElementById("offense-btn");
