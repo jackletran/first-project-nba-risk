@@ -1,39 +1,34 @@
 # Description
 
-OOP game built with web technologies (html, css, javascript)
+Your favorite strategy boardgame with NBA skin - every gamer's sweetest dream. Play with your family and friends!
 
 # How to play
 
-Move player with arrow keys :)
+The basic Risk boardgame rules apply: https://www.hasbro.com/common/instruct/risk.pdf
 
 # Demo
 
-@todo :)
+https://jackletran.github.io/nba-risk/
 
 # Further Improvements:
 
 Fix:
 
-- [ ] prevent player from going outside
-- [ ] avoid repeating code for Player and Obstacle class (inheritance)
+- [ ] new team skins
+- [ ] new maps/extensions
 
 Functionality:
 
-- shooting (recommended)
-- drop different things (prizes, different types of obstacles...)
-- count points
-- improve game over
-- levels (ex. increasing speed as user moves to the next level)
-- multiple lives
-- allow moving the player up and down
-- settings (speed of the game, distance between obstacles)
+- choose one of two teams: Golden State Warriors or Brooklyn Nets
+- random unit distribution on the map
+- roll dice and conquer all the states
 
 UX:
 
-- add images (background, player, obstacles...)
-- sound
+- buttons with your team's favorite players
+- your team's signature sound effects
 
 Code quality:
 
-- apply OOP inheritance
-- detach logic & DOM manipulation
+- JS game logic and DOM manipulation
+- HTML and CSS structure and styling
