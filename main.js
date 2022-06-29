@@ -77,10 +77,10 @@ class Game {
     let halfOfStates = Math.floor(shuffledStates.length / 2);
 
     for (let i = 0; i < halfOfStates; i++) {
-      this.player1.stateInfo.unitsInThatState[`${shuffledStates[i]}`]++;
+      this.player1.stateInfo.unitsInThatState[`${shuffledStates[i]}`] += 10;
     }
     for (let c = halfOfStates; c < statesLength; c++) {
-      this.player2.stateInfo.unitsInThatState[`${shuffledStates[c]}`]++;
+      this.player2.stateInfo.unitsInThatState[`${shuffledStates[c]}`] += 10;
     }
   }
 
@@ -97,14 +97,6 @@ class Game {
     const playerTwoUnitsArray = Object.values(
       this.player2.stateInfo.unitsInThatState
     );
-    // SVG Data
-    // Add image icon
-    // const targetSvg = document.getElementById("svg");
-    // let newImage = document.createElement("image");
-    // newImage.setAttribute("x", "385");
-    // newImage.setAttribute("y", "285");
-    // newImage.setAttribute("href", "./Images/Icons/gsw-logo.png");
-    // targetSvg.appendChild(newImage);
 
     // Player 1
     for (let c = 0; c < playerOneStateArray.length; c++) {
@@ -117,7 +109,7 @@ class Game {
       if (playerOneUnitsArray[c] > 0) {
         stateText.innerHTML = `${playerOneUnitsArray[c]}`;
         stateText.style.fill = "var(--warriors-gold)";
-        stateArea.style.fill = "var(--warriors-blue)";
+        // stateArea.style.fill = "var(--warriors-blue)";
         // Add image icon
         stateIcon.setAttributeNS(
           "http://www.w3.org/1999/xlink",
@@ -138,7 +130,7 @@ class Game {
       if (playerTwoUnitsArray[i] > 0) {
         stateText.innerHTML = `${playerTwoUnitsArray[i]}`;
         stateText.style.fill = "var(--nets-black)";
-        stateArea.style.fill = "var(--nets-white)";
+        // stateArea.style.fill = "var(--nets-white)";
         // Add image icon
         stateIcon.setAttributeNS(
           "http://www.w3.org/1999/xlink",
@@ -216,9 +208,7 @@ class Player {
     (this.team = team),
       (this.boostUnits = 0),
       (this.stateInfo = {
-        statesArray: [
-          "PUSH ALL THE STATES WITH AT LEAST 1 UNIT IN THIS ARRAY AND COUNT",
-        ],
+        statesArray: [],
         statesCount: 0,
         unitsInThatState: {
           TX: 0,
@@ -341,31 +331,49 @@ class Player {
     }
   }
 
+  calcDominatedStates() {
+    let statesArray = Object.keys(this.stateInfo.unitsInThatState);
+    this.stateInfo.statesCount = 0;
+    this.stateInfo.statesArray = [];
+
+    for (let i = 0; i < statesArray.length; i++) {
+      if (this.stateInfo.unitsInThatState[`${statesArray[i]}`] > 0) {
+        this.stateInfo.statesCount += 1;
+        this.stateInfo.statesArray.push(statesArray[i]);
+        console.log(i + statesArray[i]);
+      } else {
+        console.log("Not your state");
+      }
+    }
+    console.log(this.stateInfo.statesCount);
+    return this.stateInfo.statesCount;
+  }
+
   attachBoostEventListener() {
     const getInnerResultBox = document.getElementById("inner-result");
     const svgGameboard = document.getElementById("svg");
     const boostButton = document.getElementById("boost-btn");
     let selectedState;
     let boostLeftover = this.boostUnits;
+    let dominatedStates = this.calcDominatedStates();
     let howManyUnitsYouHavePlaced = 0;
     const objectStatesArray = Object.keys(this.stateInfo.unitsInThatState);
 
     boostButton.addEventListener(
       "click",
       () => {
-        // add 3 units
-        boostLeftover += 20;
-        // switch (this.dominatedStates) {
-        //   case this.dominatedStates > 11:
-        //     this.boostUnits =
-        //       this.boostUnits + Math.floor(this.dominatedStates / 3);
-        //     console.log(this.boostUnits);
-        //     break;
-
-        //   default:
-        //     this.boostUnits += 3;
-        //     break;
-        // }
+        // add 3 units per default - divide all states by 3 to get more than 3 units, but min 3
+        switch (true) {
+          case dominatedStates > 11:
+            boostLeftover = boostLeftover + Math.floor(dominatedStates / 3);
+            boostLeftover;
+            console.log("OVER");
+            break;
+          default:
+            boostLeftover += 3;
+            console.log("UNDER");
+            break;
+        }
         selectedState = event.target.id;
         getInnerResultBox.innerHTML = `You have ${boostLeftover} Units left.`;
         this.resetDice();
@@ -390,7 +398,7 @@ class Player {
         }
         howManyUnitsYouHavePlaced++;
         getInnerResultBox.innerHTML = `You placed ${howManyUnitsYouHavePlaced} units on ${selectedState}. You have ${boostLeftover} units left.`;
-        this.displayUnits();
+        newGame.displayUnits();
         this.resetDice();
       } else {
         getInnerResultBox.innerHTML = `You have used up all your units!`;
@@ -441,17 +449,11 @@ class Player {
 
 const newGame = new Game();
 newGame.start();
+// console.log(Object.keys(newGame.player1.stateInfo.unitsInThatState));
+// console.log(newGame.shuffleStates());
+
+newGame.player1.attachAllEventListeners();
+
 console.log(newGame.player1);
-console.log(Object.keys(newGame.player1.stateInfo.unitsInThatState));
-console.log(newGame.shuffleStates());
-console.log(newGame.randomStateAssignment());
-
-// newGame.player1.attachAllEventListeners();
-
-// newGame.attachEndturnEventListener();
-// newGame.displayTurn();
-// newGame.shuffleStates();
-
-// displayUnits();
-// attachAllEventListeners();
+newGame.player1.calcDominatedStates();
 // attachSelectedStateEventListener();
