@@ -205,8 +205,9 @@ class Game {
 
 class Player {
   constructor(team, starts) {
-    (this.team = team),
-      (this.boostUnits = 0),
+    (this.team = team), (this.attackerState = "");
+    this.defenderState = "";
+    (this.boostUnits = 0),
       (this.stateInfo = {
         statesArray: [],
         statesCount: 0,
@@ -293,6 +294,7 @@ class Player {
     this.rollAttackerDice();
     this.rollDefenderDice();
     this.compareDice();
+    return this.compareDice();
   }
 
   compareDice() {
@@ -342,7 +344,6 @@ class Player {
         this.stateInfo.statesArray.push(statesArray[i]);
       }
     }
-    console.log(this.stateInfo.statesCount);
     return this.stateInfo.statesCount;
   }
 
@@ -410,18 +411,36 @@ class Player {
 
   attachOffenseEventListener() {
     const offenseButton = document.getElementById("offense-btn");
-    offenseButton.addEventListener("click", () => this.rollDice());
+    offenseButton.addEventListener("click", () => {
+      const getInnerResultBox = document.getElementById("inner-result");
+      getInnerResultBox.innerHTML =
+        "Select the Attacker and the Defender State.";
+      this.attachAttackerAndDefenderStateEventListener();
+      offenseButton.innerHTML = "CONFIRM";
+      offenseButton.id = "confirm-btn";
+      this.attachConfirmOffenseEventListener();
+    });
   }
 
-  attachSelectedStateEventListener() {
+  attachConfirmOffenseEventListener() {
+    const confirmButton = document.getElementById("confirm-btn");
+    confirmButton.addEventListener("click", () => {
+      confirmButton.innerHTML = "OFFENSE";
+      confirmButton.id = "offense-btn";
+      const getInnerResultBox = document.getElementById("inner-result");
+      getInnerResultBox.innerHTML = "You have to select the states first.";
+      this.attachOffenseEventListener();
+      this.battle();
+    });
+  }
+
+  attachAttackerAndDefenderStateEventListener() {
     const getInnerResultBox = document.getElementById("inner-result");
     const gameboardPathsCollection = document.getElementsByTagName("path");
     const gameboardPathsArray = [...gameboardPathsCollection];
 
     let attStateId;
     let defStateId;
-    let attackerState;
-    let defenderState;
     let resultArray = [];
 
     gameboardPathsArray.forEach((path) => {
@@ -432,45 +451,59 @@ class Player {
 
         switch (true) {
           case newGame.player1.stateInfo.unitsInThatState[`${attStateId}`] > 0:
-            attackerState = event.target.id;
-            getInnerResultBox.innerHTML = `You will attack with: ${attackerState}`;
+            this.attackerState = event.target.id;
+            getInnerResultBox.innerHTML = `You will attack with: ${this.attackerState}`;
             break;
           case newGame.player2.stateInfo.unitsInThatState[`${defStateId}`] > 0:
-            defenderState = event.target.id;
-            getInnerResultBox.innerHTML = `Do you want to attack- ${defenderState}- with: -${attackerState}-?`;
-            resultArray = [attackerState, defenderState];
+            this.defenderState = event.target.id;
+            getInnerResultBox.innerHTML = `Do you want to attack- ${this.defenderState}- with: -${this.attackerState}-?`;
+            resultArray = [this.attackerState, this.defenderState];
             console.log(resultArray);
-            return resultArray;
+            break;
+          // return resultArray;
           default:
             getInnerResultBox.innerHTML =
               "Select the Attacker State first and then the Defender State.";
+            break;
         }
+        console.log("ATT STATE" + this.attackerState);
+        console.log("DEF STATE" + this.defenderState);
         this.resetDice();
       });
     });
-  } // needs to be edited: if it's offense phase, attach attachSelectedStateEventListener
+    return resultArray;
+  }
 
-  battle(attackerState, defenderState, result) {
+  battle() {
     // Player 1 attacks
-    newGame.player1.stateInfo.unitsInThatState[`${attackerState}`];
-    newGame.player2.stateInfo.unitsInThatState[`${defenderState}`];
-    let rollDiceResult = result;
+    this.rollDice();
+    let rollDiceResult = this.rollDice();
 
-    switch (rollDiceResult) {
-      case -2:
-        newGame.player2.stateInfo.unitsInThatState[`${defenderState}`] - 2;
+    switch (true) {
+      case rollDiceResult === -2:
+        newGame.player2.stateInfo.unitsInThatState[
+          `${this.defenderState}`
+        ] -= 2;
         break;
-      case 2:
-        newGame.player1.stateInfo.unitsInThatState[`${attackerState}`] - 2;
+      case rollDiceResult === 2:
+        newGame.player1.stateInfo.unitsInThatState[
+          `${this.attackerState}`
+        ] -= 2;
         break;
-      case 1:
-        newGame.player2.stateInfo.unitsInThatState[`${defenderState}`] - 1;
-        newGame.player1.stateInfo.unitsInThatState[`${attackerState}`] - 1;
+      case rollDiceResult === 1:
+        newGame.player2.stateInfo.unitsInThatState[
+          `${this.defenderState}`
+        ] -= 1;
+        newGame.player1.stateInfo.unitsInThatState[
+          `${this.attackerState}`
+        ] -= 1;
         break;
       default:
-        console.log("Something is wrong!");
+        console.log(rollDiceResult);
+        console.log("Something is wrong in the battle method!");
         break;
     }
+    newGame.displayUnits();
   }
 
   attachAllEventListeners() {
@@ -500,6 +533,6 @@ newGame.start();
 // console.log(newGame.shuffleStates());
 
 newGame.player1.attachAllEventListeners();
-
-console.log(newGame.player1.stateInfo.unitsInThatState.TX > 0);
-newGame.player1.attachSelectedStateEventListener();
+// console.log(newGame.player1.rollAttackerDice());
+// console.log(newGame.player1.rollDefenderDice());
+// console.log(newGame.player1.compareDice());
