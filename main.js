@@ -351,7 +351,9 @@ class Player {
 
   attachBoostEventListener() {
     const getInnerResultBox = document.getElementById("inner-result");
-    const svgGameboard = document.getElementById("svg");
+    const gameboardPathsCollection = document.getElementsByTagName("path");
+    const gameboardPathsArray = [...gameboardPathsCollection];
+
     const boostButton = document.getElementById("boost-btn");
     let selectedState;
     let boostLeftover = this.boostUnits;
@@ -381,31 +383,33 @@ class Player {
       { once: true }
     );
 
-    svgGameboard.addEventListener("click", () => {
-      // place unit on "selected State"
-      if (boostLeftover > 0) {
-        boostLeftover--;
-        selectedState = event.target.id;
-        for (let i = 0; i < objectStatesArray.length; i++) {
-          if (objectStatesArray[i].includes(selectedState)) {
-            let stateText = document.getElementById(
-              `${objectStatesArray[i]}-text`
-            );
-            this.stateInfo.unitsInThatState[`${selectedState}`]++;
-            stateText.innerHTML =
-              this.stateInfo.unitsInThatState[`${selectedState}`];
+    gameboardPathsArray.forEach((path) => {
+      path.addEventListener("click", () => {
+        // place unit on "selected State"
+        if (boostLeftover > 0) {
+          boostLeftover--;
+          selectedState = event.target.id;
+          for (let i = 0; i < objectStatesArray.length; i++) {
+            if (objectStatesArray[i].includes(selectedState)) {
+              let stateText = document.getElementById(
+                `${objectStatesArray[i]}-text`
+              );
+              this.stateInfo.unitsInThatState[`${selectedState}`]++;
+              stateText.innerHTML =
+                this.stateInfo.unitsInThatState[`${selectedState}`];
+            }
           }
+          howManyUnitsYouHavePlaced++;
+          getInnerResultBox.innerHTML = `You placed ${howManyUnitsYouHavePlaced} units on ${selectedState}. You have ${boostLeftover} units left.`;
+          newGame.displayUnits();
+          this.resetDice();
+        } else {
+          getInnerResultBox.innerHTML = `You have used up all your units!`;
+          this.resetDice();
         }
-        howManyUnitsYouHavePlaced++;
-        getInnerResultBox.innerHTML = `You placed ${howManyUnitsYouHavePlaced} units on ${selectedState}. You have ${boostLeftover} units left.`;
-        newGame.displayUnits();
-        this.resetDice();
-      } else {
-        getInnerResultBox.innerHTML = `You have used up all your units!`;
-        this.resetDice();
-      }
+      });
     });
-  } //make that you cannot click on svg or text!!!
+  }
 
   attachOffenseEventListener() {
     const offenseButton = document.getElementById("offense-btn");
@@ -414,15 +418,19 @@ class Player {
 
   attachSelectedStateEventListener() {
     const getInnerResultBox = document.getElementById("inner-result");
-    const svgGameboard = document.getElementById("svg");
+    const gameboardPathsCollection = document.getElementsByTagName("path");
+    const gameboardPathsArray = [...gameboardPathsCollection];
+
     let selectedState;
 
-    svgGameboard.addEventListener("click", (event) => {
-      // display "selected State"
-      console.log("You clicked on this selectedState: " + event.target.id);
-      selectedState = event.target.id;
-      getInnerResultBox.innerHTML = `You have selected: ${selectedState}`;
-      this.resetDice();
+    gameboardPathsArray.forEach((path) => {
+      path.addEventListener("click", (event) => {
+        // display "selected State"
+        console.log("You clicked on this selectedState: " + event.target.id);
+        selectedState = event.target.id;
+        getInnerResultBox.innerHTML = `You have selected: ${selectedState}`;
+        this.resetDice();
+      });
     });
   } // AAAAAAAAAAAAAAAA if it's offense phase, attach attachSelectedStateEventListener
 
@@ -455,5 +463,4 @@ newGame.start();
 newGame.player1.attachAllEventListeners();
 
 console.log(newGame.player1);
-newGame.player1.calcDominatedStates();
 // attachSelectedStateEventListener();
