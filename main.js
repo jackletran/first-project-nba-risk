@@ -205,9 +205,12 @@ class Game {
 
 class Player {
   constructor(team, starts) {
-    (this.team = team), (this.attackerState = "");
-    this.defenderState = "";
-    (this.boostUnits = 0),
+    (this.team = team),
+      (this.attackerState = ""),
+      (this.defenderState = ""),
+      (this.offenseIsClickable = true),
+      (this.confirmIsClickable = false),
+      (this.boostUnits = 0),
       (this.stateInfo = {
         statesArray: [],
         statesCount: 0,
@@ -405,83 +408,90 @@ class Player {
 
   attachOffenseEventListener() {
     const offenseButton = document.getElementById("offense-btn");
-    const confirmButton = document.getElementById("confirm-btn");
-
-    let offenseIsClickable = true;
-    let confirmIsClickable = false;
 
     let counter = 0;
 
     // ATTACH OFFENSE EVENTLISTENER
-    if (offenseIsClickable === true) {
+    if (this.offenseIsClickable === true) {
       offenseButton.addEventListener("click", () => {
         this.attackerState = undefined;
         this.defenderState = undefined;
         console.log(this.attackerState);
         console.log(this.defenderState);
         console.log("Offense was triggered");
-
-        // ATTACH SELECT STATES EVENTLISTENER
-        const getInnerResultBox = document.getElementById("inner-result");
-        getInnerResultBox.innerHTML =
-          "Select the Attacker and the Defender State.";
-        const gameboardPathsCollection = document.getElementsByTagName("path");
-        const gameboardPathsArray = [...gameboardPathsCollection];
-        console.log("Attach select states");
-
-        let attStateId;
-        let defStateId;
-
-        gameboardPathsArray.forEach((path) => {
-          path.addEventListener("click", (event) => {
-            attStateId = event.target.id;
-            defStateId = event.target.id;
-
-            switch (true) {
-              case newGame.player1.stateInfo.unitsInThatState[`${attStateId}`] >
-                0:
-                this.attackerState = event.target.id;
-                getInnerResultBox.innerHTML = `You will attack with: ${this.attackerState}`;
-                break;
-              case newGame.player2.stateInfo.unitsInThatState[`${defStateId}`] >
-                0:
-                this.defenderState = event.target.id;
-                getInnerResultBox.innerHTML = `Do you want to attack ${this.defenderState} with ${this.attackerState}?`;
-                break;
-              default:
-                getInnerResultBox.innerHTML =
-                  "Select the Attacker State first and then the Defender State.";
-                break;
-            }
-            this.resetDice();
-          });
-        });
-        // ATTACH CONFIRM EVENTLISTENER
-        //  class="activate-hover"
+        this.offenseIsClickable = false;
+        this.confirmIsClickable = true;
+        console.log(this.confirmIsClickable);
+        console.log(this.offenseIsClickable);
+        const confirmButton = document.getElementById("confirm-btn");
         confirmButton.classList.add("activate-hover");
-        offenseIsClickable = false;
-        confirmIsClickable = true;
-        if (confirmIsClickable === true && counter === 0) {
-          confirmButton.addEventListener("click", () => {
-            console.log("Confirm was triggered");
-            confirmButton.classList.remove("activate-hover");
-            console.log(this.attackerState);
-            console.log(this.defenderState);
-            if (
-              this.attackerState !== undefined &&
-              this.defenderState !== undefined
-            ) {
-              this.battle();
-            } else {
-              console.log("Not good!");
-            }
-            confirmIsClickable = false;
-            offenseIsClickable = true;
-            counter++;
-          });
+        if (counter === 0 && this.confirmIsClickable === true) {
+          console.log("Works!");
+          this.attachSelectAttackerDefenderEventListener();
+          this.attachConfirmEventListener();
         }
+        counter += 1;
       });
     }
+  }
+
+  attachSelectAttackerDefenderEventListener() {
+    const getInnerResultBox = document.getElementById("inner-result");
+    getInnerResultBox.innerHTML = "Select the Attacker and the Defender State.";
+    const gameboardPathsCollection = document.getElementsByTagName("path");
+    const gameboardPathsArray = [...gameboardPathsCollection];
+    console.log("Attach select states");
+
+    let attStateId;
+    let defStateId;
+
+    gameboardPathsArray.forEach((path) => {
+      path.addEventListener("click", (event) => {
+        attStateId = event.target.id;
+        defStateId = event.target.id;
+
+        switch (true) {
+          case newGame.player1.stateInfo.unitsInThatState[`${attStateId}`] > 0:
+            this.attackerState = event.target.id;
+            getInnerResultBox.innerHTML = `You will attack with: ${this.attackerState}`;
+            break;
+          case newGame.player2.stateInfo.unitsInThatState[`${defStateId}`] > 0:
+            this.defenderState = event.target.id;
+            getInnerResultBox.innerHTML = `Do you want to attack ${this.defenderState} with ${this.attackerState}?`;
+            break;
+          default:
+            getInnerResultBox.innerHTML =
+              "Select the Attacker State first and then the Defender State.";
+            break;
+        }
+        this.resetDice();
+      });
+    });
+  }
+
+  attachConfirmEventListener() {
+    const confirmButton = document.getElementById("confirm-btn");
+    const getInnerResultBox = document.getElementById("inner-result");
+    confirmButton.addEventListener("click", () => {
+      console.log("Confirm was triggered");
+      //  class="activate-hover"
+      confirmButton.classList.remove("activate-hover");
+      console.log(this.attackerState);
+      console.log(this.defenderState);
+      if (
+        this.attackerState !== undefined &&
+        this.defenderState !== undefined
+      ) {
+        this.battle();
+      } else {
+        getInnerResultBox.innerHTML =
+          "Select the Attacker and the Defender State first.";
+      }
+      this.confirmIsClickable = false;
+      this.offenseIsClickable = true;
+      console.log(this.confirmIsClickable);
+      console.log(this.offenseIsClickable);
+    });
   }
 
   battle() {
