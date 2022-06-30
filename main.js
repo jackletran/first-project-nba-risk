@@ -2,6 +2,8 @@ class Game {
   constructor() {
     this.player1 = this.declarePlayer1(); // = newGame.player1 = newGame.curry
     this.player2 = this.declarePlayer2();
+    this.pathClickCounterP1 = 0;
+    this.pathClickCounterP2 = 0;
   }
 
   declarePlayer1() {
@@ -77,10 +79,10 @@ class Game {
     let halfOfStates = Math.floor(shuffledStates.length / 2);
 
     for (let i = 0; i < halfOfStates; i++) {
-      this.player1.stateInfo.unitsInThatState[`${shuffledStates[i]}`] += 10;
+      this.player1.stateInfo.unitsInThatState[`${shuffledStates[i]}`] += 5;
     }
     for (let c = halfOfStates; c < statesLength; c++) {
-      this.player2.stateInfo.unitsInThatState[`${shuffledStates[c]}`] += 10;
+      this.player2.stateInfo.unitsInThatState[`${shuffledStates[c]}`] += 5;
     }
   }
 
@@ -352,63 +354,182 @@ class Player {
 
     const boostButton = document.getElementById("boost-btn");
     let selectedState;
-    let boostLeftover = this.boostUnits;
-    let dominatedStates = this.calcDominatedStates();
-    let howManyUnitsYouHavePlaced = 0;
-    const objectStatesArray = Object.keys(this.stateInfo.unitsInThatState);
+    if (newGame.player1.myTurn === true) {
+      // Player 1 Start
+      let boostLeftover = newGame.player1.boostUnits;
+      let dominatedStates = newGame.player1.calcDominatedStates();
+      let howManyUnitsP1HasPlaced = 0;
+      let objectStatesArray = Object.keys(
+        newGame.player1.stateInfo.unitsInThatState
+      );
 
-    // this.boostCounter = 0;
-    console.log(this.boostCounter);
-    boostButton.addEventListener("click", () => {
-      // add 3 units per default - divide all states by 3 to get more than 3 units, but min 3
-      if (this.boostCounter === 1) {
-        switch (true) {
-          case dominatedStates > 11:
-            boostLeftover = boostLeftover + Math.floor(dominatedStates / 3);
-            boostLeftover;
-            getInnerResultBox.innerHTML = `P1 has ${boostLeftover} Units left.`;
-
-            break;
-          default:
-            boostLeftover += 3;
-            getInnerResultBox.innerHTML = `P1 has ${boostLeftover} Units left.`;
-            break;
-        }
-      } else {
-        getInnerResultBox.innerHTML = `P1 has used his boost. P1 has ${boostLeftover} Units left.`;
-      }
-
-      this.resetDice();
-      this.boostCounter -= 1;
-      console.log(this.boostCounter);
-    });
-
-    gameboardPathsArray.forEach((path) => {
-      path.addEventListener("click", () => {
-        // place unit on "selected State"
-        if (boostLeftover > 0) {
-          boostLeftover--;
-          selectedState = event.target.id;
-          for (let i = 0; i < objectStatesArray.length; i++) {
-            if (objectStatesArray[i].includes(selectedState)) {
-              let stateText = document.getElementById(
-                `${objectStatesArray[i]}-text`
-              );
-              this.stateInfo.unitsInThatState[`${selectedState}`]++;
-              stateText.innerHTML =
-                this.stateInfo.unitsInThatState[`${selectedState}`];
+      boostButton.addEventListener("click", () => {
+        // add 3 units per default - divide all states by 3 to get more than 3 units, but min 3
+        // if Player 1
+        if (newGame.player1.myTurn === true) {
+          console.log("Player 1 click");
+          if (newGame.player1.boostCounter === 1) {
+            switch (true) {
+              case dominatedStates > 11:
+                boostLeftover = boostLeftover + Math.floor(dominatedStates / 3);
+                boostLeftover;
+                getInnerResultBox.innerHTML = `P1 has ${boostLeftover} Units left.`;
+                break;
+              default:
+                boostLeftover += 3;
+                getInnerResultBox.innerHTML = `P1 has ${boostLeftover} Units left.`;
+                break;
             }
+          } else {
+            getInnerResultBox.innerHTML = `P1 has used his boost. P1 has ${boostLeftover} Units left.`;
           }
-          howManyUnitsYouHavePlaced++;
-          getInnerResultBox.innerHTML = `P1 placed ${howManyUnitsYouHavePlaced} units on ${selectedState}. ${boostLeftover} units left.`;
-          newGame.displayUnits();
-          this.resetDice();
-        } else {
-          getInnerResultBox.innerHTML = `P1 has used up all his units!`;
-          this.resetDice();
+
+          newGame.player1.resetDice();
+          newGame.player1.boostCounter -= 1;
+          howManyUnitsP1HasPlaced = 0;
+          console.log(newGame.player1.boostCounter);
+
+          gameboardPathsArray.forEach((path) => {
+            if (newGame.pathClickCounterP1 === 0) {
+              path.addEventListener("click", () => {
+                selectedState = event.target.id;
+                // place unit on "selected State"
+                if (newGame.player1.myTurn === true) {
+                  if (
+                    boostLeftover > 0 &&
+                    newGame.player1.stateInfo.unitsInThatState[
+                      `${selectedState}`
+                    ] > 0
+                  ) {
+                    newGame.pathClickCounterP1++;
+                    boostLeftover--;
+                    for (let i = 0; i < objectStatesArray.length; i++) {
+                      if (objectStatesArray[i].includes(selectedState)) {
+                        let stateText = document.getElementById(
+                          `${objectStatesArray[i]}-text`
+                        );
+                        newGame.player1.stateInfo.unitsInThatState[
+                          `${selectedState}`
+                        ]++;
+                        stateText.innerHTML =
+                          newGame.player1.stateInfo.unitsInThatState[
+                            `${selectedState}`
+                          ];
+                      }
+                    }
+                    howManyUnitsP1HasPlaced++;
+                    getInnerResultBox.innerHTML = `P1 placed ${howManyUnitsP1HasPlaced} units on ${selectedState}. ${boostLeftover} units left.`;
+                    newGame.displayUnits();
+                    newGame.player1.resetDice();
+                  } else if (
+                    boostLeftover > 0 &&
+                    newGame.player1.stateInfo.unitsInThatState[
+                      `${selectedState}`
+                    ] === 0
+                  ) {
+                    getInnerResultBox.innerHTML = `Select a state that P1 owns.`;
+                    newGame.player1.resetDice();
+                  } else if (boostLeftover === 0) {
+                    getInnerResultBox.innerHTML = `P1 has used up all his units!`;
+                    newGame.player1.resetDice();
+                  }
+                }
+              });
+            }
+          });
+        }
+        //
+        //
+        //
+        //
+        //
+        //
+        // if Player 2
+        else if (newGame.player2.myTurn === true) {
+          console.log("Player 2 click");
+          boostLeftover = newGame.player2.boostUnits;
+          dominatedStates = newGame.player2.calcDominatedStates();
+          let howManyUnitsP2HasPlaced = 0;
+          objectStatesArray = Object.keys(
+            newGame.player2.stateInfo.unitsInThatState
+          );
+          if (newGame.player2.boostCounter === 1) {
+            switch (true) {
+              case dominatedStates > 11:
+                boostLeftover = boostLeftover + Math.floor(dominatedStates / 3);
+                boostLeftover;
+                getInnerResultBox.innerHTML = `P2 has ${boostLeftover} Units left.`;
+
+                break;
+              default:
+                boostLeftover += 3;
+                getInnerResultBox.innerHTML = `P2 has ${boostLeftover} Units left.`;
+                break;
+            }
+          } else {
+            getInnerResultBox.innerHTML = `P2 has used his boost. P2 has ${boostLeftover} Units left.`;
+          }
+
+          newGame.player2.resetDice();
+          newGame.player2.boostCounter -= 1;
+          howManyUnitsP2HasPlaced = 0;
+          console.log(newGame.player2.boostCounter);
+          gameboardPathsArray.forEach((path) => {
+            if (newGame.pathClickCounterP2 === 0) {
+              path.addEventListener("click", () => {
+                selectedState = event.target.id;
+                console.log(selectedState);
+                console.log(
+                  newGame.player2.stateInfo.unitsInThatState[`${selectedState}`]
+                );
+                if (newGame.player2.myTurn === true) {
+                  // place unit on "selected State"
+                  if (
+                    boostLeftover > 0 &&
+                    newGame.player2.stateInfo.unitsInThatState[
+                      `${selectedState}`
+                    ] > 0
+                  ) {
+                    newGame.pathClickCounterP2++;
+                    boostLeftover--;
+                    for (let i = 0; i < objectStatesArray.length; i++) {
+                      if (objectStatesArray[i].includes(selectedState)) {
+                        let stateText = document.getElementById(
+                          `${objectStatesArray[i]}-text`
+                        );
+                        newGame.player2.stateInfo.unitsInThatState[
+                          `${selectedState}`
+                        ]++;
+                        stateText.innerHTML =
+                          newGame.player2.stateInfo.unitsInThatState[
+                            `${selectedState}`
+                          ];
+                      }
+                    }
+                    howManyUnitsP2HasPlaced++;
+                    getInnerResultBox.innerHTML = `P2 placed ${howManyUnitsP2HasPlaced} units on ${selectedState}. ${boostLeftover} units left.`;
+                    newGame.displayUnits();
+                    newGame.player2.resetDice();
+                  } else if (
+                    boostLeftover > 0 &&
+                    newGame.player2.stateInfo.unitsInThatState[
+                      `${selectedState}`
+                    ] === 0
+                  ) {
+                    getInnerResultBox.innerHTML = `Select a state that P2 owns.`;
+                    newGame.player2.resetDice();
+                  } else if (boostLeftover === 0) {
+                    getInnerResultBox.innerHTML = `P2 has used up all his units!`;
+                    newGame.player2.resetDice();
+                  }
+                  howManyUnitsP2HasPlaced = 0;
+                }
+              });
+            }
+          });
         }
       });
-    });
+    }
   }
 
   attachOffenseEventListener() {
