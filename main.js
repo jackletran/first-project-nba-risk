@@ -250,83 +250,150 @@ class Player {
     this.myTurn = starts;
   }
 
-  rollAttackerDice() {
-    let attack1 = 1 + Math.floor(6 * Math.random());
-    const die1Collection = document.getElementsByClassName("attack-die-one");
-    const die1Array = [...die1Collection];
-    die1Array.forEach((element) => (element.innerHTML = attack1));
-
-    let attack2 = 1 + Math.floor(6 * Math.random());
-    const die2Collection = document.getElementsByClassName("attack-die-two");
-    const die2Array = [...die2Collection];
-    die2Array.forEach((element) => (element.innerHTML = attack2));
-
-    let attack3 = 1 + Math.floor(6 * Math.random());
-    const die3Collection = document.getElementsByClassName("attack-die-three");
-    const die3Array = [...die3Collection];
-    die3Array.forEach((element) => (element.innerHTML = attack3));
-
-    let resultAttack = [attack1, attack2, attack3];
-
-    resultAttack.sort((a, b) => b - a);
-
-    return resultAttack;
-  }
-
-  rollDefenderDice() {
-    let defense1 = 1 + Math.floor(6 * Math.random());
-    const die4Collection = document.getElementsByClassName("defense-die-one");
-    const die4Array = [...die4Collection];
-    die4Array.forEach((element) => (element.innerHTML = defense1));
-
-    let defense2 = 1 + Math.floor(6 * Math.random());
-    const die5Collection = document.getElementsByClassName("defense-die-two");
-    const die5Array = [...die5Collection];
-    die5Array.forEach((element) => (element.innerHTML = defense2));
-
-    let resultDefense = [defense1, defense2];
-    resultDefense.sort((a, b) => b - a);
-
-    return resultDefense;
-  }
-
   rollDice() {
-    this.rollAttackerDice();
-    this.rollDefenderDice();
-    this.compareDice();
-    return this.compareDice();
+    roll3AttackerDice();
+    roll2DefenderDice();
+    this.compareDice(roll3AttackerDice(), roll2DefenderDice());
+    return this.compareDice(roll3AttackerDice(), roll2DefenderDice());
   }
 
-  compareDice() {
+  roll32Dice() {
+    roll3AttackerDice();
+    roll2DefenderDice();
+    this.compareDice(roll3AttackerDice(), roll2DefenderDice());
+    return this.compareDice(roll3AttackerDice(), roll2DefenderDice());
+  }
+
+  roll31Dice() {
+    roll3AttackerDice();
+    roll1DefenderDice();
+    this.compareDice(roll3AttackerDice(), roll1DefenderDice());
+    return this.compareDice(roll3AttackerDice(), roll1DefenderDice());
+  }
+
+  roll21Dice() {
+    roll2AttackerDice();
+    roll1DefenderDice();
+    this.compareDice(roll2AttackerDice(), roll1DefenderDice());
+    return this.compareDice(roll2AttackerDice(), roll1DefenderDice());
+  }
+
+  roll11Dice() {
+    roll1AttackerDice();
+    roll1DefenderDice();
+    this.compareDice(roll1AttackerDice(), roll1DefenderDice());
+    return this.compareDice(roll1AttackerDice(), roll1DefenderDice());
+  }
+
+  roll12Dice() {
+    roll1AttackerDice();
+    roll2DefenderDice();
+    this.compareDice(roll1AttackerDice(), roll2DefenderDice());
+    return this.compareDice(roll1AttackerDice(), roll2DefenderDice());
+  }
+
+  roll12Dice() {
+    roll2AttackerDice();
+    roll2DefenderDice();
+    this.compareDice(roll2AttackerDice(), roll2DefenderDice());
+    return this.compareDice(roll2AttackerDice(), roll2DefenderDice());
+  }
+
+  compareDice(attackerDice, defenderDice) {
     let finalResult;
     let innerResultBox;
-    let resultAttack = this.rollAttackerDice();
-    let resultDefense = this.rollDefenderDice();
+    let resultAttack = attackerDice;
+    let resultDefense = defenderDice;
+    let attLength = attackerDice.length;
+    let defLength = defenderDice.length;
+
     switch (true) {
-      case resultAttack[0] > resultDefense[0] &&
-        resultAttack[1] > resultDefense[1]:
-        finalResult = "Offense wins both!!!";
-        innerResultBox = document.getElementById("inner-result");
-        innerResultBox.innerHTML = finalResult;
-        return -2;
-      case resultAttack[0] <= resultDefense[0] &&
-        resultAttack[1] <= resultDefense[1]:
-        finalResult = "Defense wins both!!!";
-        innerResultBox = document.getElementById("inner-result");
-        innerResultBox.innerHTML = finalResult;
-        return 2;
-      case resultAttack[0] > resultDefense[0] &&
-        resultAttack[1] <= resultDefense[1]:
-        finalResult = "Offense wins first, Defense wins second!!!";
-        innerResultBox = document.getElementById("inner-result");
-        innerResultBox.innerHTML = finalResult;
-        return 1;
-      case resultAttack[0] <= resultDefense[0] &&
-        resultAttack[1] > resultDefense[1]:
-        finalResult = "Defense wins first, Offense wins second!!!";
-        innerResultBox = document.getElementById("inner-result");
-        innerResultBox.innerHTML = finalResult;
-        return 1;
+      case attLength >= 2 && defLength === 2:
+        switch (true) {
+          case resultAttack[0] > resultDefense[0] &&
+            resultAttack[1] > resultDefense[1]:
+            finalResult = "Offense wins both!!!";
+            innerResultBox = document.getElementById("inner-result");
+            innerResultBox.innerHTML = finalResult;
+            return -2;
+          case resultAttack[0] <= resultDefense[0] &&
+            resultAttack[1] <= resultDefense[1]:
+            finalResult = "Defense wins both!!!";
+            innerResultBox = document.getElementById("inner-result");
+            innerResultBox.innerHTML = finalResult;
+            return 2;
+          case resultAttack[0] > resultDefense[0] &&
+            resultAttack[1] <= resultDefense[1]:
+            finalResult = "Offense wins first, Defense wins second!!!";
+            innerResultBox = document.getElementById("inner-result");
+            innerResultBox.innerHTML = finalResult;
+            return 11;
+          case resultAttack[0] <= resultDefense[0] &&
+            resultAttack[1] > resultDefense[1]:
+            finalResult = "Defense wins first, Offense wins second!!!";
+            innerResultBox = document.getElementById("inner-result");
+            innerResultBox.innerHTML = finalResult;
+            return 11;
+          default:
+            console.log("something is wrong, you are terrible");
+            break;
+        }
+        break;
+      case attLength >= 2 && defLength === 1:
+        switch (true) {
+          case resultAttack[0] > resultDefense[0] ||
+            resultAttack[1] > resultDefense[0]:
+            finalResult = "Offense wins and takes the state!!!";
+            innerResultBox = document.getElementById("inner-result");
+            innerResultBox.innerHTML = finalResult;
+            return 17;
+          case resultAttack[0] <= resultDefense[0] &&
+            resultAttack[1] <= resultDefense[0]:
+            finalResult = "Defense wins!!!";
+            innerResultBox = document.getElementById("inner-result");
+            innerResultBox.innerHTML = finalResult;
+            return -1;
+          default:
+            console.log("something is wrong, you are terrible");
+            break;
+        }
+        break;
+      case attLength === 1 && defLength === 1:
+        switch (true) {
+          case resultAttack[0] > resultDefense[0]:
+            finalResult = "Offense wins and takes the state!!!";
+            innerResultBox = document.getElementById("inner-result");
+            innerResultBox.innerHTML = finalResult;
+            return 17;
+          case resultAttack[0] <= resultDefense[0]:
+            finalResult = "Defense wins!!!";
+            innerResultBox = document.getElementById("inner-result");
+            innerResultBox.innerHTML = finalResult;
+            return -1;
+          default:
+            console.log("something is wrong, you are terrible");
+            break;
+        }
+        break;
+      case attLength === 1 && defLength >= 2:
+        switch (true) {
+          case resultAttack[0] > resultDefense[0] &&
+            resultAttack[0] > resultDefense[1]:
+            finalResult = "Offense wins!!!";
+            innerResultBox = document.getElementById("inner-result");
+            innerResultBox.innerHTML = finalResult;
+            return 1;
+          case resultAttack[0] <= resultDefense[0] ||
+            resultAttack[0] <= resultDefense[1]:
+            finalResult = "Defense wins!!!";
+            innerResultBox = document.getElementById("inner-result");
+            innerResultBox.innerHTML = finalResult;
+            return -1;
+          default:
+            console.log("something is wrong, you are terrible");
+            break;
+        }
+        break;
       default:
         console.log("something is wrong, you are terrible");
         break;
@@ -542,17 +609,11 @@ class Player {
       offenseButton.addEventListener("click", () => {
         this.attackerState = undefined;
         this.defenderState = undefined;
-        console.log(this.attackerState);
-        console.log(this.defenderState);
-        console.log("Offense was triggered");
         this.offenseIsClickable = false;
         this.confirmIsClickable = true;
-        console.log(this.confirmIsClickable);
-        console.log(this.offenseIsClickable);
         const confirmButton = document.getElementById("confirm-btn");
         confirmButton.classList.add("activate-hover");
         if (counter === 0 && this.confirmIsClickable === true) {
-          console.log("Works!");
           this.attachSelectAttackerDefenderEventListener();
           this.attachConfirmEventListener();
         }
@@ -643,8 +704,8 @@ class Player {
 
   battle() {
     // Player 1 attacks
-    this.rollDice();
-    let rollDiceResult = this.rollDice();
+    this.roll32Dice();
+    let rollDiceResult = this.roll32Dice();
     console.log("Battle is being called");
     const getInnerResultBox = document.getElementById("inner-result");
 
@@ -669,10 +730,10 @@ class Player {
           this.defenderState !== undefined:
           newGame.player2.stateInfo.unitsInThatState[
             `${this.defenderState}`
-          ] -= 1;
+          ] -= 11;
           newGame.player1.stateInfo.unitsInThatState[
             `${this.attackerState}`
-          ] -= 1;
+          ] -= 11;
           break;
         default:
           console.log(rollDiceResult);
@@ -737,6 +798,86 @@ class Player {
   }
 }
 
+function roll3AttackerDice() {
+  let attack1 = 1 + Math.floor(6 * Math.random());
+  const die1Collection = document.getElementsByClassName("attack-die-one");
+  const die1Array = [...die1Collection];
+  die1Array.forEach((element) => (element.innerHTML = attack1));
+
+  let attack2 = 1 + Math.floor(6 * Math.random());
+  const die2Collection = document.getElementsByClassName("attack-die-two");
+  const die2Array = [...die2Collection];
+  die2Array.forEach((element) => (element.innerHTML = attack2));
+
+  let attack3 = 1 + Math.floor(6 * Math.random());
+  const die3Collection = document.getElementsByClassName("attack-die-three");
+  const die3Array = [...die3Collection];
+  die3Array.forEach((element) => (element.innerHTML = attack3));
+
+  let resultAttack = [attack1, attack2, attack3];
+
+  resultAttack.sort((a, b) => b - a);
+
+  return resultAttack;
+}
+
+function roll2AttackerDice() {
+  let attack1 = 1 + Math.floor(6 * Math.random());
+  const die1Collection = document.getElementsByClassName("attack-die-one");
+  const die1Array = [...die1Collection];
+  die1Array.forEach((element) => (element.innerHTML = attack1));
+
+  let attack2 = 1 + Math.floor(6 * Math.random());
+  const die2Collection = document.getElementsByClassName("attack-die-two");
+  const die2Array = [...die2Collection];
+  die2Array.forEach((element) => (element.innerHTML = attack2));
+
+  let resultAttack = [attack1, attack2];
+
+  resultAttack.sort((a, b) => b - a);
+
+  return resultAttack;
+}
+
+function roll1AttackerDice() {
+  let attack1 = 1 + Math.floor(6 * Math.random());
+  const die1Collection = document.getElementsByClassName("attack-die-one");
+  const die1Array = [...die1Collection];
+  die1Array.forEach((element) => (element.innerHTML = attack1));
+
+  let resultAttack = [attack1];
+
+  return resultAttack;
+}
+
+function roll2DefenderDice() {
+  let defense1 = 1 + Math.floor(6 * Math.random());
+  const die4Collection = document.getElementsByClassName("defense-die-one");
+  const die4Array = [...die4Collection];
+  die4Array.forEach((element) => (element.innerHTML = defense1));
+
+  let defense2 = 1 + Math.floor(6 * Math.random());
+  const die5Collection = document.getElementsByClassName("defense-die-two");
+  const die5Array = [...die5Collection];
+  die5Array.forEach((element) => (element.innerHTML = defense2));
+
+  let resultDefense = [defense1, defense2];
+  resultDefense.sort((a, b) => b - a);
+
+  return resultDefense;
+}
+
+function roll1DefenderDice() {
+  let defense1 = 1 + Math.floor(6 * Math.random());
+  const die4Collection = document.getElementsByClassName("defense-die-one");
+  const die4Array = [...die4Collection];
+  die4Array.forEach((element) => (element.innerHTML = defense1));
+
+  let resultDefense = [defense1];
+
+  return resultDefense;
+}
+
 const newGame = new Game();
 newGame.start();
 // console.log(Object.keys(newGame.player1.stateInfo.unitsInThatState));
@@ -747,3 +888,11 @@ newGame.player1.attachAllEventListeners();
 // console.log(newGame.player2.myTurn);
 // console.log(newGame.player1.rollDefenderDice());
 // console.log(newGame.player1.compareDice());
+
+console.log(roll1AttackerDice());
+console.log(roll2AttackerDice());
+console.log(roll3AttackerDice());
+console.log(roll2DefenderDice());
+console.log(roll1DefenderDice());
+
+console.log(newGame.player1.roll32Dice());
