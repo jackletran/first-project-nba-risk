@@ -292,7 +292,7 @@ class Player {
     return this.compareDice(roll1AttackerDice(), roll2DefenderDice());
   }
 
-  roll12Dice() {
+  roll22Dice() {
     roll2AttackerDice();
     roll2DefenderDice();
     this.compareDice(roll2AttackerDice(), roll2DefenderDice());
@@ -434,7 +434,6 @@ class Player {
         // add 3 units per default - divide all states by 3 to get more than 3 units, but min 3
         // if Player 1
         if (newGame.player1.myTurn === true) {
-          console.log("Player 1 click");
           if (newGame.player1.boostCounter === 1) {
             switch (true) {
               case dominatedStates > 11:
@@ -454,7 +453,6 @@ class Player {
           newGame.player1.resetDice();
           newGame.player1.boostCounter -= 1;
           howManyUnitsP1HasPlaced = 0;
-          console.log(newGame.player1.boostCounter);
 
           gameboardPathsArray.forEach((path) => {
             if (newGame.pathClickCounterP1 === 0) {
@@ -497,7 +495,7 @@ class Player {
                     getInnerResultBox.innerHTML = `Select a state that P1 owns.`;
                     newGame.player1.resetDice();
                   } else if (boostLeftover === 0) {
-                    getInnerResultBox.innerHTML = `P1 has used up all his units!`;
+                    // getInnerResultBox.innerHTML = `P1 has used up all his units!`;
                     newGame.player1.resetDice();
                   }
                 }
@@ -513,7 +511,6 @@ class Player {
         //
         // if Player 2
         else if (newGame.player2.myTurn === true) {
-          console.log("Player 2 click");
           boostLeftover = newGame.player2.boostUnits;
           dominatedStates = newGame.player2.calcDominatedStates();
           let howManyUnitsP2HasPlaced = 0;
@@ -540,15 +537,10 @@ class Player {
           newGame.player2.resetDice();
           newGame.player2.boostCounter -= 1;
           howManyUnitsP2HasPlaced = 0;
-          console.log(newGame.player2.boostCounter);
           gameboardPathsArray.forEach((path) => {
             if (newGame.pathClickCounterP2 === 0) {
               path.addEventListener("click", () => {
                 selectedState = event.target.id;
-                console.log(selectedState);
-                console.log(
-                  newGame.player2.stateInfo.unitsInThatState[`${selectedState}`]
-                );
                 if (newGame.player2.myTurn === true) {
                   // place unit on "selected State"
                   if (
@@ -586,7 +578,7 @@ class Player {
                     getInnerResultBox.innerHTML = `Select a state that P2 owns.`;
                     newGame.player2.resetDice();
                   } else if (boostLeftover === 0) {
-                    getInnerResultBox.innerHTML = `P2 has used up all his units!`;
+                    // getInnerResultBox.innerHTML = `P2 has used up all his units!`;
                     newGame.player2.resetDice();
                   }
                   howManyUnitsP2HasPlaced = 0;
@@ -627,7 +619,6 @@ class Player {
     getInnerResultBox.innerHTML = "Select the Attacker and the Defender State.";
     const gameboardPathsCollection = document.getElementsByTagName("path");
     const gameboardPathsArray = [...gameboardPathsCollection];
-    console.log("Attach select states");
 
     let attStateId;
     let defStateId;
@@ -681,11 +672,8 @@ class Player {
     const confirmButton = document.getElementById("confirm-btn");
     const getInnerResultBox = document.getElementById("inner-result");
     confirmButton.addEventListener("click", () => {
-      console.log("Confirm was triggered");
       //  class="activate-hover"
       confirmButton.classList.remove("activate-hover");
-      console.log(this.attackerState);
-      console.log(this.defenderState);
       if (
         this.attackerState !== undefined &&
         this.defenderState !== undefined
@@ -697,18 +685,90 @@ class Player {
       }
       this.confirmIsClickable = false;
       this.offenseIsClickable = true;
-      console.log(this.confirmIsClickable);
-      console.log(this.offenseIsClickable);
     });
   }
 
   battle() {
-    // Player 1 attacks
-    this.roll32Dice();
-    let rollDiceResult = this.roll32Dice();
-    console.log("Battle is being called");
+    // this.roll32Dice();
+    let rollDiceResult;
     const getInnerResultBox = document.getElementById("inner-result");
 
+    // Player 1 attacks
+    let player1AttackerUnits =
+      newGame.player1.stateInfo.unitsInThatState[`${this.attackerState}`];
+    let player2DefenderUnits =
+      newGame.player2.stateInfo.unitsInThatState[`${this.defenderState}`];
+    // Player 2 variables
+    let player2AttackerUnits =
+      newGame.player2.stateInfo.unitsInThatState[`${this.attackerState}`];
+    let player1DefenderUnits =
+      newGame.player1.stateInfo.unitsInThatState[`${this.defenderState}`];
+
+    if (newGame.player1.myTurn === true) {
+      console.log("Battle P1 is being called");
+      switch (true) {
+        case player1AttackerUnits >= 4 && player2DefenderUnits >= 2:
+          this.roll32Dice();
+          rollDiceResult = this.roll32Dice();
+          break;
+        case player1AttackerUnits >= 4 && player2DefenderUnits === 1:
+          this.roll31Dice();
+          rollDiceResult = this.roll31Dice();
+          break;
+        case player1AttackerUnits === 3 && player2DefenderUnits === 1:
+          this.roll21Dice();
+          rollDiceResult = this.roll21Dice();
+          break;
+        case player1AttackerUnits === 2 && player2DefenderUnits === 1:
+          this.roll11Dice();
+          rollDiceResult = this.roll11Dice();
+          break;
+        case player1AttackerUnits === 2 && player2DefenderUnits >= 2:
+          this.roll12Dice();
+          rollDiceResult = this.roll12Dice();
+          break;
+        case player1AttackerUnits === 3 && player2DefenderUnits >= 2:
+          this.roll22Dice();
+          rollDiceResult = this.roll22Dice();
+          break;
+        default:
+          console.log("Check your diceroll selection");
+          break;
+      }
+    } else if (newGame.player2.myTurn === true) {
+      console.log("Battle P2 is being called");
+      switch (true) {
+        case player2AttackerUnits >= 4 && player1DefenderUnits >= 2:
+          this.roll32Dice();
+          rollDiceResult = this.roll32Dice();
+          break;
+        case player2AttackerUnits >= 4 && player1DefenderUnits === 1:
+          this.roll31Dice();
+          rollDiceResult = this.roll31Dice();
+          break;
+        case player2AttackerUnits === 3 && player1DefenderUnits === 1:
+          this.roll21Dice();
+          rollDiceResult = this.roll21Dice();
+          break;
+        case player2AttackerUnits === 2 && player1DefenderUnits === 1:
+          this.roll11Dice();
+          rollDiceResult = this.roll11Dice();
+          break;
+        case player2AttackerUnits === 2 && player1DefenderUnits >= 2:
+          this.roll12Dice();
+          rollDiceResult = this.roll12Dice();
+          break;
+        case player2AttackerUnits === 3 && player1DefenderUnits >= 2:
+          this.roll22Dice();
+          rollDiceResult = this.roll22Dice();
+          break;
+        default:
+          console.log("Check your diceroll selection");
+          break;
+      }
+    }
+    console.log(rollDiceResult);
+    // end of diceroll selection, , Result of Rolling Dice
     if (newGame.player1.myTurn === true) {
       switch (true) {
         case rollDiceResult === -2 &&
@@ -717,6 +777,23 @@ class Player {
           newGame.player2.stateInfo.unitsInThatState[
             `${this.defenderState}`
           ] -= 2;
+          // if Player 1 takes state in a 3v2 or 2v2
+          if (
+            newGame.player2.stateInfo.unitsInThatState[
+              `${this.defenderState}`
+            ] <= 0
+          ) {
+            newGame.player2.stateInfo.unitsInThatState[
+              `${this.defenderState}`
+            ] = 0;
+            newGame.player1.stateInfo.unitsInThatState[
+              `${this.defenderState}`
+            ] += 1;
+            newGame.player1.stateInfo.unitsInThatState[
+              `${this.attackerState}`
+            ] -= 2;
+            newGame.displayUnits();
+          }
           break;
         case rollDiceResult === 2 &&
           this.attackerState !== undefined &&
@@ -725,22 +802,63 @@ class Player {
             `${this.attackerState}`
           ] -= 2;
           break;
+        case rollDiceResult === 11 &&
+          this.attackerState !== undefined &&
+          this.defenderState !== undefined:
+          newGame.player2.stateInfo.unitsInThatState[
+            `${this.defenderState}`
+          ] -= 1;
+          newGame.player1.stateInfo.unitsInThatState[
+            `${this.attackerState}`
+          ] -= 1;
+          break;
+        case rollDiceResult === 17 &&
+          this.attackerState !== undefined &&
+          this.defenderState !== undefined:
+          newGame.player2.stateInfo.unitsInThatState[
+            `${this.defenderState}`
+          ] -= 1;
+          // if Player 1 takes state in a 3v2 or 2v2
+          if (
+            newGame.player2.stateInfo.unitsInThatState[
+              `${this.defenderState}`
+            ] <= 0
+          ) {
+            newGame.player2.stateInfo.unitsInThatState[
+              `${this.defenderState}`
+            ] = 0;
+            newGame.player1.stateInfo.unitsInThatState[
+              `${this.defenderState}`
+            ] += 1;
+            newGame.player1.stateInfo.unitsInThatState[
+              `${this.attackerState}`
+            ] -= 2;
+            newGame.displayUnits();
+          }
+          newGame.player1.stateInfo.unitsInThatState[
+            `${this.defenderState}`
+          ] += 1;
+          newGame.displayUnits();
+          // attacker takes the state
+          break;
+        case rollDiceResult === -1 &&
+          this.attackerState !== undefined &&
+          this.defenderState !== undefined:
+          newGame.player1.stateInfo.unitsInThatState[`${this.attacker}`] -= 1;
+          break;
         case rollDiceResult === 1 &&
           this.attackerState !== undefined &&
           this.defenderState !== undefined:
           newGame.player2.stateInfo.unitsInThatState[
             `${this.defenderState}`
-          ] -= 11;
-          newGame.player1.stateInfo.unitsInThatState[
-            `${this.attackerState}`
-          ] -= 11;
+          ] -= 1;
           break;
         default:
-          console.log(rollDiceResult);
           getInnerResultBox.innerHTML = `In order to battle, you need to select 2 states`;
           console.log("Something is wrong in the battle method!");
           break;
       }
+      // Player 2 attacks, Result of Rolling Dice
     } else if (newGame.player2.myTurn === true) {
       switch (true) {
         case rollDiceResult === -2 &&
@@ -749,6 +867,23 @@ class Player {
           newGame.player1.stateInfo.unitsInThatState[
             `${this.defenderState}`
           ] -= 2;
+          // if Player 2 takes state in a 3v2 or 2v2
+          if (
+            newGame.player1.stateInfo.unitsInThatState[
+              `${this.defenderState}`
+            ] <= 0
+          ) {
+            newGame.player1.stateInfo.unitsInThatState[
+              `${this.defenderState}`
+            ] = 0;
+            newGame.player2.stateInfo.unitsInThatState[
+              `${this.defenderState}`
+            ] += 1;
+            newGame.player2.stateInfo.unitsInThatState[
+              `${this.attackerState}`
+            ] -= 2;
+            newGame.displayUnits();
+          }
           break;
         case rollDiceResult === 2 &&
           this.attackerState !== undefined &&
@@ -757,7 +892,7 @@ class Player {
             `${this.attackerState}`
           ] -= 2;
           break;
-        case rollDiceResult === 1 &&
+        case rollDiceResult === 11 &&
           this.attackerState !== undefined &&
           this.defenderState !== undefined:
           newGame.player1.stateInfo.unitsInThatState[
@@ -767,8 +902,44 @@ class Player {
             `${this.attackerState}`
           ] -= 1;
           break;
+        case rollDiceResult === 17 &&
+          this.attackerState !== undefined &&
+          this.defenderState !== undefined:
+          newGame.player1.stateInfo.unitsInThatState[
+            `${this.defenderState}`
+          ] -= 1;
+          // if Player 2 takes state in a 3v2 or 2v2
+          if (
+            newGame.player1.stateInfo.unitsInThatState[
+              `${this.defenderState}`
+            ] <= 0
+          ) {
+            newGame.player1.stateInfo.unitsInThatState[
+              `${this.defenderState}`
+            ] = 0;
+            newGame.player2.stateInfo.unitsInThatState[
+              `${this.defenderState}`
+            ] += 1;
+            newGame.player2.stateInfo.unitsInThatState[
+              `${this.attackerState}`
+            ] -= 2;
+            newGame.displayUnits();
+          }
+          // attacker takes the state
+          break;
+        case rollDiceResult === -1 &&
+          this.attackerState !== undefined &&
+          this.defenderState !== undefined:
+          newGame.player2.stateInfo.unitsInThatState[`${this.attacker}`] -= 1;
+          break;
+        case rollDiceResult === 1 &&
+          this.attackerState !== undefined &&
+          this.defenderState !== undefined:
+          newGame.player1.stateInfo.unitsInThatState[
+            `${this.defenderState}`
+          ] -= 1;
+          break;
         default:
-          console.log(rollDiceResult);
           getInnerResultBox.innerHTML = `In order to battle, you need to select 2 states`;
           console.log("Something is wrong in the battle method!");
           break;
@@ -776,6 +947,7 @@ class Player {
     }
     newGame.displayUnits();
   }
+  // End of battle method
 
   attachAllEventListeners() {
     this.attachBoostEventListener();
@@ -888,11 +1060,3 @@ newGame.player1.attachAllEventListeners();
 // console.log(newGame.player2.myTurn);
 // console.log(newGame.player1.rollDefenderDice());
 // console.log(newGame.player1.compareDice());
-
-console.log(roll1AttackerDice());
-console.log(roll2AttackerDice());
-console.log(roll3AttackerDice());
-console.log(roll2DefenderDice());
-console.log(roll1DefenderDice());
-
-console.log(newGame.player1.roll32Dice());
