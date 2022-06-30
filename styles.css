@@ -217,6 +217,7 @@ image {
   align-items: center;
   text-align: center;
   margin: 4rem;
+  flex-direction: column;
 }
 
 .inner-result {
@@ -228,6 +229,28 @@ image {
   text-transform: uppercase;
   justify-content: center;
   font-size: 3rem;
+}
+
+#confirm-btn {
+  display: flex;
+  width: 30vw;
+  height: 4rem;
+  align-items: center;
+  text-align: center;
+  text-transform: uppercase;
+  justify-content: center;
+  font-size: 2rem;
+  margin-top: 2rem;
+  color: black;
+}
+
+.activate-hover {
+  background-color: yellow;
+}
+
+.activate-hover:hover {
+  outline: 2px solid gold;
+  cursor: pointer;
 }
 
 /* Continent Styling / Division Styling */
