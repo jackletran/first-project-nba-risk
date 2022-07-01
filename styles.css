@@ -217,6 +217,7 @@ svg {
   /* background-position: center; */
   /* background-size: 300px; */
   margin-bottom: 100px;
+  width: 95vw;
 }
 
 .country {
@@ -405,4 +406,318 @@ image {
 .natlantic,
 .continent-9 {
   fill: pink;
+}
+
+@media (max-width: 860px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h1 img {
+    width: 2rem;
+  }
+
+  /* Start Menu Styling */
+
+  .homebackground {
+    background-image: url(./Images/Player_Images/start2_curryvsirving.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  header {
+    margin-top: 50px;
+  }
+
+  .homeheading {
+    font-size: 2.5rem;
+    color: white;
+    font-weight: lighter;
+    text-shadow: black 4px 1px 2px;
+  }
+
+  .control-start {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 10rem 0;
+    flex-direction: column;
+  }
+
+  .btn-start {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 80px;
+    font-weight: bold;
+    font-size: 4rem;
+    font-family: fantasy;
+    outline: 1px solid black;
+    background-color: aqua;
+    text-shadow: black 4px 3px 2px;
+    color: yellow;
+    margin: 20px;
+  }
+
+  .btn-start a {
+    background-color: aqua;
+    text-shadow: black 4px 3px 2px;
+    color: yellow;
+    text-decoration: none;
+  }
+
+  .btn-start:hover {
+    cursor: pointer;
+  }
+
+  .info {
+    position: absolute;
+    top: 50rem;
+    font-size: 1rem;
+    color: black;
+    font-weight: lighter;
+    text-shadow: aqua 2px 1px 2px;
+  }
+
+  /* End Start Menu Styling */
+
+  /* Team Styling / Team Colorways */
+
+  /* Gameover Image Size */
+
+  #gameover-img {
+    width: 90vw;
+  }
+
+  /* Golden State Warriors Colorway */
+
+  h1.warriorscolway {
+    color: var(--warriors-gold);
+    text-shadow: var(--warriors-blue) 4px 3px 2px;
+  }
+
+  .die.attack.warriorscolway {
+    background-color: var(--clippers-red);
+  }
+
+  .die.defense.warriorscolway {
+    background-color: var(--clippers-blue);
+  }
+
+  .btn.warriorscolway {
+    color: var(--warriors-gold);
+    text-shadow: #020819 4px 3px 2px;
+  }
+
+  .btn.boost.warriorscolway {
+    background-image: url(./Images/Player_Images/gsw_boost.webp);
+  }
+
+  .btn.offense.warriorscolway {
+    background-image: url(./Images/Player_Images/gsw_attack.webp);
+  }
+
+  .btn.endturn.warriorscolway {
+    background-image: url(./Images/Player_Images/gsw_endturn.jpg);
+  }
+
+  .inner-result.warriorscolway {
+    color: var(--warriors-gold);
+    background-color: var(--warriors-blue);
+    text-shadow: #020819 4px 3px 2px;
+  }
+
+  /* Brooklyn Nets Colorway */
+
+  h1.netscolway {
+    color: var(--nets-white);
+    text-shadow: var(--nets-black) 4px 3px 2px;
+  }
+
+  .die.attack.netscolway {
+    background-color: var(--clippers-red);
+  }
+
+  .die.defense.netscolway {
+    background-color: var(--clippers-blue);
+  }
+
+  .btn.netscolway {
+    color: var(--nets-white);
+    text-shadow: #020819 4px 3px 2px;
+  }
+
+  .btn.boost.netscolway {
+    background-image: url(./Images/Player_Images/nets_boost.webp);
+  }
+
+  .btn.offense.netscolway {
+    background-image: url(./Images/Player_Images/nets_offense3.jpg);
+  }
+
+  .btn.endturn.netscolway {
+    background-image: url(./Images/Player_Images/nets_endturn2.jpg);
+  }
+
+  .inner-result.netscolway {
+    color: var(--nets-black);
+    background-color: var(--nets-white);
+  }
+
+  /* SVG Styling */
+
+  svg {
+    /* background-image: var(--nba-background-image); */
+    /* background-position: center; */
+    /* background-size: 300px; */
+    margin-bottom: 100px;
+    width: 300vw;
+  }
+
+  .country {
+    stroke-width: 0.97;
+  }
+
+  .country:hover {
+    stroke-width: 3.97;
+    cursor: pointer;
+    stroke: yellow;
+  }
+
+  text {
+    font: italic 1rem sans-serif;
+    fill: white;
+    stroke-width: 0;
+  }
+
+  image {
+    width: 20px;
+  }
+
+  /* Dice Styling */
+
+  .display-dice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .die {
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+    text-shadow: #020819 4px 3px 2px;
+  }
+
+  /* .die.attack {
+  background-color: var(--clippers-red);
+}
+
+.die.defense {
+  background-color: var(--clippers-blue);
+} */
+
+  /* Button Styling */
+
+  .control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 50px;
+  }
+
+  .btn {
+    width: 80vw;
+    height: 15vh;
+    font-weight: bold;
+    font-size: 3rem;
+    font-family: fantasy;
+    outline: 1px solid black;
+    margin: 10px;
+  }
+
+  .btn.boost {
+    background-size: cover;
+    background-position: center;
+  }
+
+  .btn.offense {
+    background-size: cover;
+    background-position: center;
+  }
+
+  .btn.endturn {
+    background-size: cover;
+    background-position: center;
+  }
+
+  .btn:hover {
+    outline: 2px solid gold;
+    cursor: pointer;
+  }
+
+  /* Result Box Styling */
+
+  .display-result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 10px;
+    flex-direction: column;
+  }
+
+  .inner-result {
+    display: flex;
+    width: 80vw;
+    height: 9rem;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
+    justify-content: center;
+    font-size: 2rem;
+  }
+
+  #confirm-btn {
+    display: flex;
+    width: 30vw;
+    height: 4rem;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
+    justify-content: center;
+    font-size: 2rem;
+    margin-top: 2rem;
+    color: black;
+  }
+
+  .activate-hover {
+    background-color: yellow;
+  }
+
+  .activate-hover:hover {
+    outline: 2px solid gold;
+    cursor: pointer;
+  }
+
+  /* Start New Game */
+
+  .newgame {
+    color: yellow;
+    margin: 50px;
+  }
+
+  .newgame a {
+    color: yellow;
+  }
 }
