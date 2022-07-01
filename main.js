@@ -78,11 +78,20 @@ class Game {
     let statesLength = shuffledStates.length;
     let halfOfStates = Math.floor(shuffledStates.length / 2);
 
-    for (let i = 0; i < halfOfStates; i++) {
-      this.player1.stateInfo.unitsInThatState[`${shuffledStates[i]}`] += 5;
+    for (let i = 5; i < halfOfStates; i++) {
+      this.player1.stateInfo.unitsInThatState[`${shuffledStates[i]}`] += 1;
     }
-    for (let c = halfOfStates; c < statesLength; c++) {
-      this.player2.stateInfo.unitsInThatState[`${shuffledStates[c]}`] += 5;
+
+    for (let i = 0; i < 5; i++) {
+      this.player1.stateInfo.unitsInThatState[`${shuffledStates[i]}`] += 2;
+    }
+
+    for (let c = halfOfStates; c < halfOfStates + 5; c++) {
+      this.player2.stateInfo.unitsInThatState[`${shuffledStates[c]}`] += 2;
+    }
+
+    for (let c = halfOfStates + 5; c < statesLength; c++) {
+      this.player2.stateInfo.unitsInThatState[`${shuffledStates[c]}`] += 1;
     }
   }
 
@@ -401,17 +410,73 @@ class Player {
   }
 
   calcDominatedStates() {
-    let statesArray = Object.keys(this.stateInfo.unitsInThatState);
-    this.stateInfo.statesCount = 0;
-    this.stateInfo.statesArray = [];
+    // Player 1
+    let p1StatesArray = Object.keys(newGame.player1.stateInfo.unitsInThatState);
+    newGame.player1.stateInfo.statesCount = 0;
+    newGame.player1.stateInfo.p1StatesArray = [];
+    // let p1StatesLen = 33;
 
-    for (let i = 0; i < statesArray.length; i++) {
-      if (this.stateInfo.unitsInThatState[`${statesArray[i]}`] > 0) {
-        this.stateInfo.statesCount += 1;
-        this.stateInfo.statesArray.push(statesArray[i]);
+    for (let i = 0; i < p1StatesArray.length; i++) {
+      if (
+        newGame.player1.stateInfo.unitsInThatState[`${p1StatesArray[i]}`] > 0
+      ) {
+        newGame.player1.stateInfo.statesCount += 1;
+        newGame.player1.stateInfo.p1StatesArray.push(p1StatesArray[i]);
       }
     }
-    return this.stateInfo.statesCount;
+
+    // Player 2
+    let p2StatesArray = Object.keys(newGame.player2.stateInfo.unitsInThatState);
+    newGame.player2.stateInfo.statesCount = 0;
+    newGame.player2.stateInfo.p2StatesArray = [];
+
+    for (let c = 0; c < p2StatesArray.length; c++) {
+      if (
+        newGame.player2.stateInfo.unitsInThatState[`${p2StatesArray[c]}`] > 0
+      ) {
+        newGame.player2.stateInfo.statesCount += 1;
+        newGame.player2.stateInfo.p2StatesArray.push(p2StatesArray[c]);
+      }
+    }
+
+    // Gameover Sequence
+
+    const wholeDocumentBody = document.getElementById("body");
+    const removeAllCollection = document.getElementsByClassName("remove");
+    const removeAllArray = [...removeAllCollection];
+    const gameoverMessage = document.getElementById("gameover");
+    const gameoverImage = document.getElementById("gameover-img");
+    const gameover4 = "./Images/Player_Images/nets_gameover3.jpg";
+    const gameover2 = "./Images/Player_Images/warriors_gameover2.jpg";
+    // newGame.player2.stateInfo.statesCount = 33;
+    // newGame.player1.stateInfo.statesCount = 33;
+    let colorwayElements = document.querySelectorAll(".colorway");
+
+    if (newGame.player1.stateInfo.statesCount === 33) {
+      gameoverMessage.innerHTML =
+        "YOUR 2022 NBA CHAMPIONS ARE THE GOLDEN STATE WARRIORS!!!";
+      gameoverImage.setAttribute("src", gameover2);
+      removeAllArray.forEach((element) => {
+        wholeDocumentBody.removeChild(element);
+      });
+      // Change colorways
+      colorwayElements.forEach((element) => {
+        element.classList.remove("netscolway");
+        element.classList.add("warriorscolway");
+      });
+    } else if (newGame.player2.stateInfo.statesCount === 33) {
+      gameoverMessage.innerHTML =
+        "YOUR 2022 NBA CHAMPIONS ARE THE BROOKLYN NETS!!!";
+      gameoverImage.setAttribute("src", gameover4);
+      removeAllArray.forEach((element) => {
+        wholeDocumentBody.removeChild(element);
+      });
+      // Change colorways
+      colorwayElements.forEach((element) => {
+        element.classList.remove("warriorscolway");
+        element.classList.add("netscolway");
+      });
+    }
   }
 
   attachBoostEventListener() {
@@ -689,7 +754,6 @@ class Player {
   }
 
   battle() {
-    // this.roll32Dice();
     let rollDiceResult;
     const getInnerResultBox = document.getElementById("inner-result");
 
@@ -792,7 +856,7 @@ class Player {
             newGame.player1.stateInfo.unitsInThatState[
               `${this.attackerState}`
             ] -= 2;
-            newGame.displayUnits();
+            // newGame.displayUnits();
           }
           break;
         case rollDiceResult === 2 &&
@@ -838,13 +902,15 @@ class Player {
           newGame.player1.stateInfo.unitsInThatState[
             `${this.defenderState}`
           ] += 1;
-          newGame.displayUnits();
+          // newGame.displayUnits();
           // attacker takes the state
           break;
         case rollDiceResult === -1 &&
           this.attackerState !== undefined &&
           this.defenderState !== undefined:
-          newGame.player1.stateInfo.unitsInThatState[`${this.attacker}`] -= 1;
+          newGame.player1.stateInfo.unitsInThatState[
+            `${this.attackerState}`
+          ] -= 1;
           break;
         case rollDiceResult === 1 &&
           this.attackerState !== undefined &&
@@ -881,8 +947,8 @@ class Player {
             ] += 1;
             newGame.player2.stateInfo.unitsInThatState[
               `${this.attackerState}`
-            ] -= 2;
-            newGame.displayUnits();
+            ] -= 1;
+            // newGame.displayUnits();
           }
           break;
         case rollDiceResult === 2 &&
@@ -922,15 +988,17 @@ class Player {
             ] += 1;
             newGame.player2.stateInfo.unitsInThatState[
               `${this.attackerState}`
-            ] -= 2;
-            newGame.displayUnits();
+            ] -= 1;
+            // newGame.displayUnits();
           }
           // attacker takes the state
           break;
         case rollDiceResult === -1 &&
           this.attackerState !== undefined &&
           this.defenderState !== undefined:
-          newGame.player2.stateInfo.unitsInThatState[`${this.attacker}`] -= 1;
+          newGame.player2.stateInfo.unitsInThatState[
+            `${this.attackerState}`
+          ] -= 1;
           break;
         case rollDiceResult === 1 &&
           this.attackerState !== undefined &&
@@ -946,7 +1014,9 @@ class Player {
       }
     }
     newGame.displayUnits();
+    this.calcDominatedStates();
   }
+
   // End of battle method
 
   attachAllEventListeners() {
@@ -1056,6 +1126,8 @@ newGame.start();
 // console.log(newGame.shuffleStates());
 
 newGame.player1.attachAllEventListeners();
+newGame.player1.calcDominatedStates();
+
 // console.log(newGame.player1.myTurn);
 // console.log(newGame.player2.myTurn);
 // console.log(newGame.player1.rollDefenderDice());

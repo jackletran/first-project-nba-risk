@@ -20,9 +20,12 @@
       href="./Images/Favicon/favicon.ico"
     />
   </head>
-  <body>
-    <header class="header">
-      <h1 class="warriorscolway colorway">NBA Regular Season 2022</h1>
+  <body id="body">
+    <header id="header" class="header">
+      <h1 id="gameover" class="warriorscolway colorway">
+        NBA Regular Season 2022
+      </h1>
+      <img id="gameover-img" />
       <h1 class="warriorscolway colorway">
         <img src="./Images/Icons/gsw-logo.png" alt="warriors logo" />
         GSW vs. BKN
@@ -30,7 +33,7 @@
       </h1>
     </header>
 
-    <section class="control">
+    <section class="control remove">
       <button id="boost-btn" class="btn action boost warriorscolway colorway">
         BOOST
       </button>
@@ -48,7 +51,7 @@
       </button>
     </section>
 
-    <section class="display-dice">
+    <section class="display-dice remove">
       <div
         id="attack-die-one"
         class="die attack attack-die-one warriorscolway colorway"
@@ -81,14 +84,14 @@
       </div>
     </section>
 
-    <section class="display-result">
+    <section class="display-result remove">
       <div id="inner-result" class="inner-result warriorscolway colorway">
         INFO
       </div>
       <div id="confirm-btn" class="inactive">CONFIRM</div>
     </section>
 
-    <section class="gameboard">
+    <section class="gameboard remove">
       <h1 id="coordinates"></h1>
       <svg
         xmlns:dc="http://purl.org/dc/elements/1.1/"
