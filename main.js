@@ -424,7 +424,6 @@ class Player {
         newGame.player1.stateInfo.p1StatesArray.push(p1StatesArray[i]);
       }
     }
-
     // Player 2
     let p2StatesArray = Object.keys(newGame.player2.stateInfo.unitsInThatState);
     newGame.player2.stateInfo.statesCount = 0;
@@ -438,7 +437,6 @@ class Player {
         newGame.player2.stateInfo.p2StatesArray.push(p2StatesArray[c]);
       }
     }
-
     // Gameover Sequence
 
     const wholeDocumentBody = document.getElementById("body");
@@ -489,7 +487,8 @@ class Player {
     if (newGame.player1.myTurn === true) {
       // Player 1 Start
       let boostLeftover = newGame.player1.boostUnits;
-      let dominatedStates = newGame.player1.calcDominatedStates();
+      newGame.player1.calcDominatedStates();
+      let dominatedStates = newGame.player1.stateInfo.statesCount;
       let howManyUnitsP1HasPlaced = 0;
       let objectStatesArray = Object.keys(
         newGame.player1.stateInfo.unitsInThatState
@@ -577,7 +576,8 @@ class Player {
         // if Player 2
         else if (newGame.player2.myTurn === true) {
           boostLeftover = newGame.player2.boostUnits;
-          dominatedStates = newGame.player2.calcDominatedStates();
+          newGame.player2.calcDominatedStates();
+          let dominatedStates = newGame.player2.stateInfo.statesCount;
           let howManyUnitsP2HasPlaced = 0;
           objectStatesArray = Object.keys(
             newGame.player2.stateInfo.unitsInThatState
