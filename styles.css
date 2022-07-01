@@ -349,6 +349,17 @@ image {
   cursor: pointer;
 }
 
+/* Start New Game */
+
+.newgame {
+  color: yellow;
+  margin: 50px;
+}
+
+.newgame a {
+  color: yellow;
+}
+
 /* Continent Styling / Division Styling */
 
 .pacific,
